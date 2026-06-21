@@ -30,7 +30,6 @@
             position: relative;
         }
 
-        /* FONDS DE NUAGES ET NÉBULEUSES FUTURISTES (ANIMÉS) */
         .space-bg {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             background: radial-gradient(circle at 30% 40%, #150030 0%, #020208 70%);
@@ -48,83 +47,77 @@
             100% { transform: translate(80px, 50px) scale(1.2); }
         }
 
-        /* CITATION INITIALE */
+        /* PAGE D'ACCUEIL / TEST ALCOOLÉMIE */
         #ios-lockout {
             position: fixed; top:0; left:0; width:100vw; height:100vh;
             background: #05050d; z-index: 99999; display: flex; flex-direction: column;
-            justify-content: center; align-items: center; padding: 30px; text-align: center;
+            justify-content: space-between; align-items: center; padding: 40px 30px; text-align: center;
         }
-        .citation { font-family: 'Georgia', serif; font-style: italic; font-size: 1.8rem; color: #00f3ff; text-shadow: 0 0 15px rgba(0,243,255,0.4); max-width: 80%; line-height: 1.4; margin-bottom: 15px; }
-        .auteur { font-size: 0.9rem; color: #555; text-transform: uppercase; letter-spacing: 3px; margin-bottom: 50px; }
+        .login-box {
+            margin-top: auto;
+            margin-bottom: auto;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--glass-border);
+            padding: 30px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            width: 90%; max-width: 400px;
+        }
+        .login-box h2 { font-size: 1.1rem; color: var(--neon-cyan); letter-spacing: 2px; margin-bottom: 20px; text-transform: uppercase; }
+        .alc-input-wrapper { display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 20px; }
+        
+        /* Input débloqué pour pouvoir taper sur iPhone */
+        .alc-input {
+            width: 120px; background: #000; border: 2px solid var(--neon-purple); border-radius: 10px;
+            color: #fff; font-size: 1.8rem; font-family: monospace; text-align: center; padding: 8px;
+            user-select: text !important; -webkit-user-select: text !important;
+        }
+        .alc-input:focus { border-color: var(--neon-cyan); outline: none; }
+        
+        .error-msg { color: #ff003c; font-weight: bold; font-size: 1.1rem; height: 24px; margin-bottom: 15px; text-shadow: 0 0 10px #ff003c; }
+        
         #ios-lockout button {
             background: linear-gradient(45deg, var(--neon-purple), var(--neon-cyan)); color: white; font-weight: bold; padding: 15px 40px;
             border: none; border-radius: 30px; font-size: 1rem; cursor: pointer; text-transform: uppercase; letter-spacing: 2px; box-shadow: 0 0 20px rgba(157,0,255,0.5);
+            width: 100%;
         }
+        .citation-container { width: 100%; }
+        .citation { font-family: 'Georgia', serif; font-style: italic; font-size: 1.4rem; color: rgba(0, 243, 255, 0.7); max-width: 80%; line-height: 1.4; margin: 0 auto 5px auto; }
+        .auteur { font-size: 0.75rem; color: #444; text-transform: uppercase; letter-spacing: 3px; }
 
-        /* INTERFACE EN VERRE DÉPOLI (BLUR EFFECT) */
+        /* HUD MAIN INTERFACE */
         .hologram-hud {
             position: relative; z-index: 10;
             width: 95vw; height: 85vh;
-            display: grid; grid-template-columns: 1.2fr 1.4fr 1.2fr; gap: 20px;
+            display: grid; grid-template-columns: 1.3fr 1.3fr 1.4fr; gap: 20px;
             padding: 20px;
         }
 
         .glass-panel {
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            border-radius: 24px;
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            padding: 22px;
-            display: flex; flex-direction: column; justify-content: flex-start;
-            transition: all 0.5s ease;
-            height: 100%;
-            overflow: hidden;
+            background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 24px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            padding: 22px; display: flex; flex-direction: column; justify-content: flex-start; height: 100%; overflow: hidden;
         }
         .panel-title { font-size: 0.75rem; font-weight: 900; color: var(--neon-cyan); letter-spacing: 2px; text-transform: uppercase; opacity: 0.8; margin-bottom: 10px; }
 
-        /* TEXTES INTERNES GRAND FORMAT */
         .panel-data-cognitive { 
-            font-size: 1.4rem; 
-            font-weight: 700; 
-            font-family: sans-serif; 
-            text-align: left; 
-            line-height: 1.4; 
-            color: var(--neon-magenta); 
-            text-shadow: 0 0 12px rgba(255, 0, 160, 0.4); 
-            transition: color 0.2s;
-            height: 100%;
-            display: flex;
-            align-items: center;
+            font-size: 1.4rem; font-weight: 700; color: var(--neon-magenta); text-shadow: 0 0 12px rgba(255, 0, 160, 0.4); 
+            height: 100%; display: flex; align-items: center; line-height: 1.4; text-align: left;
         }
         .panel-data-gps { 
-            font-size: 1.5rem; 
-            font-weight: 800; 
-            font-family: sans-serif; 
-            text-align: left; 
-            line-height: 1.4; 
-            color: var(--neon-green); 
-            text-shadow: 0 0 10px rgba(57,255,20,0.4);
-            margin-top: 15px;
+            font-size: 1.45rem; font-weight: 800; color: var(--neon-green); text-shadow: 0 0 10px rgba(57,255,20,0.4); margin-top: 15px; line-height: 1.4;
         }
 
-        /* CAPSULE CENTRALE COMPTEUR VITESSE */
-        .core-capsule {
-            display: flex; flex-direction: column; justify-content: center; align-items: center; position: relative;
-        }
-        .speed-display {
-            text-align: center; position: relative; z-index: 5;
-        }
+        /* COMPTEUR CENTRAL */
+        .core-capsule { display: flex; flex-direction: column; justify-content: center; align-items: center; position: relative; }
+        .speed-display { text-align: center; position: relative; z-index: 5; }
         .cyber-speed {
             font-size: 9.5rem; font-weight: 200; font-family: monospace; line-height: 1;
-            background: linear-gradient(to bottom, #fff 60%, var(--neon-cyan));
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background: linear-gradient(to bottom, #fff 60%, var(--neon-cyan)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
             filter: drop-shadow(0 0 15px rgba(0, 243, 255, 0.3));
         }
         .cyber-unit { font-size: 1rem; color: var(--neon-cyan); letter-spacing: 4px; font-weight: 800; }
 
-        /* JAUGE A ESSENCE ET VOYANT DE RESERVE */
         .fuel-container { width: 100%; display: flex; align-items: center; justify-content: space-between; margin-top: 25px; padding: 0 10px; }
         .fuel-bar-wrap { width: 70%; height: 10px; background: rgba(255,255,255,0.05); border-radius: 5px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); }
         .fuel-bar-fill { width: 100%; height: 100%; background: var(--neon-cyan); transition: width 0.5s, background 0.5s; }
@@ -132,40 +125,26 @@
         .fuel-reserve-led.active { color: #ff003c; filter: drop-shadow(0 0 8px #ff003c); animation: fuel-flash 0.5s infinite alternate; }
         @keyframes fuel-flash { from { opacity: 0.3; } to { opacity: 1; } }
 
-        /* Aiguille orbitale calée sur la vitesse */
         .svg-orbit { position: absolute; width: 340px; height: 340px; z-index: 2; pointer-events: none; }
         .orbit-track { fill: none; stroke: rgba(255, 255, 255, 0.03); stroke-width: 2; }
         .orbit-glow {
             fill: none; stroke: url(#cyan-purple-grad); stroke-width: 4; stroke-linecap: round;
-            stroke-dasharray: 880; stroke-dashoffset: 880;
-            transition: stroke-dashoffset 0.1s ease-out;
-            filter: drop-shadow(0 0 8px var(--neon-cyan));
+            stroke-dasharray: 880; stroke-dashoffset: 880; transition: stroke-dashoffset 0.1s ease-out; filter: drop-shadow(0 0 8px var(--neon-cyan));
         }
 
-        /* BANNIÈRE FLASHING ALERTE */
+        /* POPUP ALERTES IMMERSIVES */
         .cyber-popup {
-            position: fixed;
-            top: -180px; left: 50%; transform: translateX(-50%);
-            width: 90vw; max-width: 800px;
-            background: rgba(15, 2, 8, 0.85);
-            border: 2px solid var(--neon-magenta);
-            border-radius: 20px;
-            padding: 22px 30px;
-            display: flex; align-items: center; gap: 30px;
-            box-shadow: 0 0 40px rgba(255, 0, 160, 0.4);
-            backdrop-filter: blur(35px); -webkit-backdrop-filter: blur(35px);
-            transition: top 0.5s cubic-bezier(0.19, 1, 0.22, 1);
-            z-index: 99999;
+            position: fixed; top: -180px; left: 50%; transform: translateX(-50%); width: 90vw; max-width: 800px;
+            background: rgba(15, 2, 8, 0.88); border: 2px solid var(--neon-magenta); border-radius: 20px; padding: 22px 30px;
+            display: flex; align-items: center; gap: 30px; box-shadow: 0 0 40px rgba(255, 0, 160, 0.4);
+            backdrop-filter: blur(35px); -webkit-backdrop-filter: blur(35px); transition: top 0.5s cubic-bezier(0.19, 1, 0.22, 1); z-index: 99999;
         }
         .cyber-popup.active { top: 30px; }
-
         .cyber-giant-icon { font-size: 4.5rem; filter: drop-shadow(0 0 15px var(--neon-magenta)); animation: glitch-pulse 0.4s infinite alternate; }
         .cyber-pop-body { flex-grow: 1; }
         .cyber-pop-header { font-size: 0.75rem; font-weight: 900; color: var(--neon-magenta); letter-spacing: 3px; }
-        .cyber-pop-text { font-size: 1.5rem; font-weight: 600; color: #ffffff; margin-top: 4px; letter-spacing: -0.5px; }
-        .cyber-close { font-size: 2rem; color: rgba(255,255,255,0.3); cursor: pointer; padding: 5px; font-weight: 200; }
-
-        @keyframes glitch-pulse { from { transform: scale(0.96) rotate(-2deg); opacity: 0.8; } to { transform: scale(1.04) rotate(2deg); opacity: 1; } }
+        .cyber-pop-text { font-size: 1.5rem; font-weight: 600; color: #ffffff; margin-top: 4px; }
+        .cyber-close { font-size: 2rem; color: rgba(255,255,255,0.3); cursor: pointer; padding: 5px; }
 
         #portrait-warning { display: none; position: fixed; top:0; left:0; width:100vw; height:100vh; background: #020208; z-index: 999999; justify-content: center; align-items: center; }
         @media (orientation: portrait) { #portrait-warning { display: flex; } }
@@ -175,40 +154,50 @@
 
     <div id="portrait-warning"><h3>🛸 RE-ALIGN INTERFACES TO HORIZONTAL</h3></div>
 
-    <!-- CITATION DE DEPART -->
+    <!-- LOCKSCREEN AVEC CONTRÔLE PHALANGIQUE D'ALCOOLÉMIE -->
     <div id="ios-lockout">
-        <div class="citation">"Le problème de notre drapeau, c'est que le blanc est au milieu."</div>
-        <div class="auteur">L.F.illiol</div>
-        <button onclick="bootQuantumHud()">INITIALISER LE COCKPIT</button>
+        <div class="login-box">
+            <h2>ÉTHYLOTEST OBLIGATOIRE</h2>
+            <div class="alc-input-wrapper">
+                <input type="number" step="0.1" class="alc-input" id="driver-alc" value="0.0" placeholder="0.0">
+                <span style="font-size: 1.5rem; font-weight: bold; color: var(--neon-purple);">g/L</span>
+            </div>
+            <div class="error-msg" id="error-output"></div>
+            <button onclick="validateAlcoholThreshold()">DÉVERROUILLER LE BOLIDE</button>
+        </div>
+
+        <div class="citation-container">
+            <div class="citation">"Le problème de notre drapeau, c'est que le blanc est au milieu."</div>
+            <div class="auteur">L.F.illiol</div>
+        </div>
     </div>
 
-    <!-- EFFET NUAGES D'ARRIÈRE PLAN -->
     <div class="space-bg">
         <div class="cloud-1"></div>
         <div class="cloud-2"></div>
     </div>
 
-    <!-- NOTIFICATION INTEMPESTIVE (PANNES ET ALCOOLÉMIE) -->
+    <!-- NOTIFICATIONS INTEMPESTIVES SANS SENS -->
     <div class="cyber-popup" id="cyber-alert">
-        <div class="cyber-giant-icon" id="alt-icon">⚙️</div>
+        <div class="cyber-giant-icon" id="alt-icon">⚠️</div>
         <div class="cyber-pop-body">
-            <div class="cyber-pop-header" id="alt-type">SYSTEM_ALERT</div>
-            <div class="cyber-pop-text" id="alt-text">INITIALISATION</div>
+            <div class="cyber-pop-header" id="alt-type">ALCOOLÉMIE LOG</div>
+            <div class="cyber-pop-text" id="alt-text">CHARGEMENT DES INFOS ALCOOL...</div>
         </div>
         <div class="cyber-close" onclick="dismissCyberAlert()">✕</div>
     </div>
 
-    <!-- HUD INTERACTIVE TRANSPARENTE EN VERRE -->
+    <!-- INJECTEUR HUD GRID -->
     <div class="hologram-hud">
         
-        <!-- PANNEAU GAUCHE : INTERFACE GPS MAPS MAXIMISÉE -->
+        <!-- NAVIGATION STRICTE : LES PUTES, LA JONQ, CHRISTIAN, BOULOGNE -->
         <div class="glass-panel">
-            <div class="panel-title">🗺️ LIVE NAVIGATION (WAZE LINK)</div>
-            <div class="panel-data-gps" id="hud-gps">CALCUL EN COURS...</div>
-            <div id="hud-gps-sub" style="font-size:0.75rem; color:rgba(255,255,255,0.4); margin-top:12px; text-transform:uppercase; line-height: 1.4;">RECHERCHE D'ITINÉRAIRE MALIN</div>
+            <div class="panel-title">🗺️ GOOGLE MAPS PRO (ITINÉRAIRE PRIVÉ)</div>
+            <div class="panel-data-gps" id="hud-gps">ANALYSE SATELLITE...</div>
+            <div id="hud-gps-sub" style="font-size:0.75rem; color:rgba(255,255,255,0.4); margin-top:12px; text-transform:uppercase; line-height: 1.4;">CALCUL DU CHEMIN LE PLUS COURT</div>
         </div>
 
-        <!-- GROS COMPTEUR CENTRAL CYBERNETIQUE VITESSE + JAUGE ESSENCE -->
+        <!-- RADAR CENTRAL VITESSE -->
         <div class="glass-panel core-capsule">
             <svg class="svg-orbit" viewBox="0 0 300 300">
                 <defs>
@@ -226,7 +215,6 @@
                 <div class="cyber-unit">SPEED DETECTED</div>
             </div>
 
-            <!-- BLOC JAUGE À ESSENCE ET RÉSERVE -->
             <div class="fuel-container">
                 <span style="font-size:0.65rem; color:var(--neon-cyan); font-weight:900; letter-spacing:1px;">FUEL (PASTIS)</span>
                 <div class="fuel-bar-wrap">
@@ -236,29 +224,39 @@
             </div>
         </div>
 
-        <!-- PANNEAU DROIT : ENTIÈREMENT DÉDIÉ AUX INSULTES -->
+        <!-- MACHINE À INSULTES MAXIMISÉE (PANNEAU DROIT ENTIER) -->
         <div class="glass-panel">
             <div class="panel-title">🔥 COGNITIVE LOG / TOURETTE MOD</div>
-            <div class="panel-data-cognitive" id="hud-alc-msg">INITIALISATION DES INSULTES...</div>
+            <div class="panel-data-cognitive" id="hud-alc-msg">CHARGEMENT DES PROVOCATIONS...</div>
         </div>
 
     </div>
 
     <script>
         let activeTimer = null;
+        let initialAlcoholValue = 0;
         const maxDisplaySpeedForOrbit = 100;
 
-        // Événements intempestifs combinant pannes et alcoomélies aberrantes
-        const flashAlerts = [
-            { icon: "🛸", type: "CRITICAL_BIOLOGICAL_ERR", msg: "MAINTENANCE COURROIE D'ÉJACULATION STRATOSPHÉRIQUE", style: "var(--neon-magenta)" },
-            { icon: "🧪", type: "ETHANOL_CRITICAL", msg: "ALCOOLÉMIE : 12.47 g/L [MORT]", style: "#ff003c" },
-            { icon: "⚠️", type: "ETHANOL_WARNING", msg: "ALCOOLÉMIE : 4.82 g/L [COMPLÈTEMENT ARRACHÉ]", style: "var(--neon-yellow)" },
-            { icon: "👮", type: "BRIGADE_ALERT", msg: "ALCOOLÉMIE : 0.00 g/L [SOBRE] — INSPECTION SOUHAITÉE", style: "var(--neon-green)" },
-            { icon: "☄️", type: "NAVIGATION_LOST", msg: "ALCOOLÉMIE : 8.12 g/L [BLEU] — DIRECTION : LE FOSSÉ", style: "var(--neon-purple)" },
-            { icon: "🚫", type: "ATMOSPHERE_SMOKE_ERR", msg: "NE PAS FUMER SOUFFLET OUVERT SOUS PEINE D'EJECTION", style: "var(--neon-magenta)" }
+        const insultsSober = [
+            "VA BOIRE !",
+            "BOURRE-TOI LA GUEULE !",
+            "TROP SOBRE POUR CONDUIRE !",
+            "DANGER : TU ES NETTEMENT TROP LUCIDE !",
+            "REVIENS QUAND TU SERAS COUVERT DE PASTIS !"
         ];
 
-        function bootQuantumHud() {
+        function validateAlcoholThreshold() {
+            let inputField = document.getElementById('driver-alc');
+            let errorDiv = document.getElementById('error-output');
+            let val = parseFloat(inputField.value);
+
+            if (isNaN(val) || val < 1.0) {
+                let randomInsult = insultsSober[Math.floor(Math.random() * insultsSober.length)];
+                errorDiv.innerText = randomInsult;
+                return;
+            }
+
+            initialAlcoholValue = val;
             document.getElementById('ios-lockout').style.display = 'none';
             if ('wakeLock' in navigator) navigator.wakeLock.request('screen').catch(()=>{});
 
@@ -281,10 +279,10 @@
         }
 
         function startGlitchGenerator() {
-            // Déclenchement intempestif des popups (Pannes + Alcoolémie) toutes les 14 secondes
-            setInterval(() => { triggerCyberAlerte(); }, 14000);
+            // Notifications Intempestives (Commentaires incohérents face à l'alcoolémie)
+            setInterval(() => { triggerCyberAlerte(); }, 12000);
 
-            // MACHINE À INSULTES (COGNITIVE LOG) COUVRE TOUT LE PANNEAU DROIT
+            // INSULTES DU BLOC DROIT (100% LIBÉRÉ)
             const alertesEtProvocations = [
                 "INES A ENCORE CONFONDU LE VOLANT AVEC UN SÈCHE-CHEVEUX, BOUGE !",
                 "PAUSE MAKE-UP FULL FACE POUR INES !",
@@ -306,23 +304,14 @@
                 let messageAleatoire = alertesEtProvocations[Math.floor(Math.random() * alertesEtProvocations.length)];
                 let msgTarget = document.getElementById('hud-alc-msg');
                 msgTarget.innerText = messageAleatoire;
-                
-                if(messageAleatoire.includes("SERPENT") || messageAleatoire.includes("TRAJ")) {
-                    msgTarget.style.color = "#ff003c";
-                    msgTarget.style.textShadow = "0 0 15px #ff003c";
-                    setTimeout(() => { 
-                        msgTarget.style.color = "var(--neon-magenta)"; 
-                        msgTarget.style.textShadow = "0 0 12px rgba(255, 0, 160, 0.4)";
-                    }, 3500);
-                }
-            }, 4000);
+            }, 3800);
 
-            // GPS STYLE WAZE PRO (SANS BLOC DISTORTION)
+            // ITINÉRAIRES GPS DE QUALITÉ SÉLECTIONNÉE
             const etapesGps = [
-                { destination: "⬆️ N20 • Rester sur la voie", distance: "42 km — 24 min", action: "Trafic fluide • Cap vers La Jonq'" },
-                { destination: "↩️ Sortie 6.9 • Bifurcation imminente", distance: "650 m — 1 min", action: "Ralentissement signalé • Zone à fort risque" },
-                { destination: "🔄 Rond-point • 2e sortie : Rue Christian", distance: "1.2 km — 3 min", action: "Arrivée estimée à 18h45 • Préparer l'apéro" },
-                { destination: "⚠️ Alerte Trafic • Ralentissement majeur", distance: "8.3 km — 18 min", action: "Radar fixe signalé à 500m • Conserver l'allure" }
+                { destination: "⬆️ WAZE : Direction Chez Christian", distance: "450 m — 1 min", action: "Prendre à gauche • Christian a déjà décapsulé" },
+                { destination: "↩️ Sortie 69 : Direction La Jonq'", distance: "12 km — 6 min", action: "Zone de travaux • Idéal pour l'achat de cartouches" },
+                { destination: "🔄 3e sortie : Direction Les Putes", distance: "2.3 km — 4 min", action: "Radar de recul actif • Ralentissements fréquents" },
+                { destination: "⚠️ GG MAPS : Le Bois de Boulogne", distance: "800 m — 12 min", action: "Perte de signal GPS • Demi-tour fortement déconseillé" }
             ];
             let indexGps = 0;
 
@@ -331,35 +320,43 @@
                 document.getElementById('hud-gps').innerText = etape.destination;
                 document.getElementById('hud-gps-sub').innerHTML = `${etape.distance}<br>${etape.action}`;
                 indexGps = (indexGps + 1) % etapesGps.length;
-            }, 6500);
+            }, 6000);
 
-            // GESTION JAUGE PASTIS
+            // JAUGE PASTIS
             setInterval(() => {
                 let fuelBar = document.getElementById('fuel-meter');
                 let fuelWarning = document.getElementById('fuel-warning');
-                
-                if(Math.random() > 0.6) {
-                    fuelBar.style.width = "4%";
+                if(Math.random() > 0.7) {
+                    fuelBar.style.width = "5%";
                     fuelBar.style.background = "#ff003c";
                     fuelWarning.classList.add('active');
                 } else {
-                    let randomFull = Math.floor(45 + Math.random() * 55);
-                    fuelBar.style.width = `${randomFull}%`;
+                    fuelBar.style.width = `${Math.floor(40 + Math.random() * 60)}%`;
                     fuelBar.style.background = "var(--neon-cyan)";
                     fuelWarning.classList.remove('active');
                 }
-            }, 6000);
+            }, 5500);
 
-            // Init au démarrage
-            setTimeout(() => { triggerCyberAlerte(); }, 2500);
+            // Init direct
+            setTimeout(() => { triggerCyberAlerte(); }, 2000);
             document.getElementById('hud-alc-msg').innerText = alertesEtProvocations[0];
             document.getElementById('hud-gps').innerText = etapesGps[0].destination;
             document.getElementById('hud-gps-sub').innerHTML = `${etapesGps[0].distance}<br>${etapesGps[0].action}`;
         }
 
         function triggerCyberAlerte() {
-            let item = flashAlerts[Math.floor(Math.random() * flashAlerts.length)];
+            // Génération de fausses valeurs absurdes couplées à des états incohérents
+            let randomFakeValue = (1.1 + Math.random() * 19.4).toFixed(2);
+            const customStates = [
+                { type: "STATUS_COMPLÈTEMENT_ARRACHÉ", msg: `Alcool : ${randomFakeValue} g/L. Le radar indique que vous êtes sobre, accélérez !`, style: "var(--neon-yellow)", icon: "🍻" },
+                { type: "STATUS_MORT", msg: `Alcool : ${randomFakeValue} g/L. Organes vitaux détruits, conduite optimale détectée.`, style: "#ff003c", icon: "💀" },
+                { type: "STATUS_BLEU", msg: `Alcool : ${randomFakeValue} g/L. Vision thermique activée. Tout va bien.`, style: "var(--neon-purple)", icon: "🔵" },
+                { type: "STATUS_SOBRE_MAIS_FAUX", msg: `Alcool : 0.12 g/L [SOBRE]. Erreur système : vous mentez, vous êtes pété.`, style: "var(--neon-green)", icon: "👮" }
+            ];
+
+            let item = customStates[Math.floor(Math.random() * customStates.length)];
             let popup = document.getElementById('cyber-alert');
+            
             document.getElementById('alt-icon').innerText = item.icon;
             document.getElementById('alt-type').innerText = item.type;
             document.getElementById('alt-text').innerText = item.msg;
@@ -369,7 +366,6 @@
             popup.classList.add('active');
 
             if(activeTimer) clearTimeout(activeTimer);
-            // La popup reste visible 6 secondes avant de disparaître de l'écran tactile
             activeTimer = setTimeout(() => { dismissCyberAlert(); }, 6000);
         }
 
