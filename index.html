@@ -47,43 +47,60 @@
             100% { transform: translate(80px, 50px) scale(1.2); }
         }
 
-        /* PAGE D'ACCUEIL / TEST ALCOOLÉMIE */
+        /* PAGE D'ACCUEIL / TEST ALCOOLÉMIE SÉCURISÉ POUR IPHONE */
         #ios-lockout {
             position: fixed; top:0; left:0; width:100vw; height:100vh;
             background: #05050d; z-index: 99999; display: flex; flex-direction: column;
-            justify-content: space-between; align-items: center; padding: 40px 30px; text-align: center;
+            justify-content: space-between; align-items: center; padding: 20px 15px; text-align: center;
         }
         .login-box {
             margin-top: auto;
             margin-bottom: auto;
             background: rgba(255, 255, 255, 0.03);
             border: 1px solid var(--glass-border);
-            padding: 30px;
+            padding: 20px;
             border-radius: 20px;
             backdrop-filter: blur(10px);
-            width: 90%; max-width: 400px;
+            width: 90%; max-width: 360px;
         }
-        .login-box h2 { font-size: 1.1rem; color: var(--neon-cyan); letter-spacing: 2px; margin-bottom: 20px; text-transform: uppercase; }
-        .alc-input-wrapper { display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 20px; }
+        .login-box h2 { font-size: 1rem; color: var(--neon-cyan); letter-spacing: 2px; margin-bottom: 15px; text-transform: uppercase; }
+        .alc-input-wrapper { display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 15px; }
         
-        /* Input débloqué pour pouvoir taper sur iPhone */
         .alc-input {
-            width: 120px; background: #000; border: 2px solid var(--neon-purple); border-radius: 10px;
-            color: #fff; font-size: 1.8rem; font-family: monospace; text-align: center; padding: 8px;
+            width: 100px; background: #000; border: 2px solid var(--neon-purple); border-radius: 10px;
+            color: #fff; font-size: 1.6rem; font-family: monospace; text-align: center; padding: 6px;
             user-select: text !important; -webkit-user-select: text !important;
         }
         .alc-input:focus { border-color: var(--neon-cyan); outline: none; }
         
-        .error-msg { color: #ff003c; font-weight: bold; font-size: 1.1rem; height: 24px; margin-bottom: 15px; text-shadow: 0 0 10px #ff003c; }
+        .error-msg { color: #ff003c; font-weight: bold; font-size: 0.95rem; min-height: 20px; margin-bottom: 12px; text-shadow: 0 0 10px #ff003c; }
         
         #ios-lockout button {
-            background: linear-gradient(45deg, var(--neon-purple), var(--neon-cyan)); color: white; font-weight: bold; padding: 15px 40px;
-            border: none; border-radius: 30px; font-size: 1rem; cursor: pointer; text-transform: uppercase; letter-spacing: 2px; box-shadow: 0 0 20px rgba(157,0,255,0.5);
+            background: linear-gradient(45deg, var(--neon-purple), var(--neon-cyan)); color: white; font-weight: bold; padding: 12px 30px;
+            border: none; border-radius: 30px; font-size: 0.95rem; cursor: pointer; text-transform: uppercase; letter-spacing: 2px; box-shadow: 0 0 20px rgba(157,0,255,0.5);
             width: 100%;
         }
-        .citation-container { width: 100%; }
-        .citation { font-family: 'Georgia', serif; font-style: italic; font-size: 1.4rem; color: rgba(0, 243, 255, 0.7); max-width: 80%; line-height: 1.4; margin: 0 auto 5px auto; }
-        .auteur { font-size: 0.75rem; color: #444; text-transform: uppercase; letter-spacing: 3px; }
+        
+        /* CORRECTION DE L'AFFICHAGE DE LA CITATION EN BAS (NE COUPE PLUS SUR IPHONE) */
+        .citation-container { 
+            width: 100%; 
+            padding-bottom: env(safe-area-inset-bottom, 15px); 
+            max-height: 80px; 
+            overflow: hidden;
+        }
+        .citation { 
+            font-family: 'Georgia', serif; 
+            font-style: italic; 
+            font-size: 1.05rem; 
+            color: rgba(0, 243, 255, 0.7); 
+            max-width: 90%; 
+            line-height: 1.3; 
+            margin: 0 auto 4px auto;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .auteur { font-size: 0.7rem; color: #555; text-transform: uppercase; letter-spacing: 2px; }
 
         /* HUD MAIN INTERFACE */
         .hologram-hud {
@@ -103,6 +120,7 @@
         .panel-data-cognitive { 
             font-size: 1.4rem; font-weight: 700; color: var(--neon-magenta); text-shadow: 0 0 12px rgba(255, 0, 160, 0.4); 
             height: 100%; display: flex; align-items: center; line-height: 1.4; text-align: left;
+            overflow: hidden;
         }
         .panel-data-gps { 
             font-size: 1.45rem; font-weight: 800; color: var(--neon-green); text-shadow: 0 0 10px rgba(57,255,20,0.4); margin-top: 15px; line-height: 1.4;
@@ -132,7 +150,7 @@
             stroke-dasharray: 880; stroke-dashoffset: 880; transition: stroke-dashoffset 0.1s ease-out; filter: drop-shadow(0 0 8px var(--neon-cyan));
         }
 
-        /* POPUP ALERTES IMMERSIVES */
+        /* POPUP ALERTES */
         .cyber-popup {
             position: fixed; top: -180px; left: 50%; transform: translateX(-50%); width: 90vw; max-width: 800px;
             background: rgba(15, 2, 8, 0.88); border: 2px solid var(--neon-magenta); border-radius: 20px; padding: 22px 30px;
@@ -154,13 +172,12 @@
 
     <div id="portrait-warning"><h3>🛸 RE-ALIGN INTERFACES TO HORIZONTAL</h3></div>
 
-    <!-- LOCKSCREEN AVEC CONTRÔLE PHALANGIQUE D'ALCOOLÉMIE -->
     <div id="ios-lockout">
         <div class="login-box">
             <h2>ÉTHYLOTEST OBLIGATOIRE</h2>
             <div class="alc-input-wrapper">
                 <input type="number" step="0.1" class="alc-input" id="driver-alc" value="0.0" placeholder="0.0">
-                <span style="font-size: 1.5rem; font-weight: bold; color: var(--neon-purple);">g/L</span>
+                <span style="font-size: 1.3rem; font-weight: bold; color: var(--neon-purple);">g/L</span>
             </div>
             <div class="error-msg" id="error-output"></div>
             <button onclick="validateAlcoholThreshold()">DÉVERROUILLER LE BOLIDE</button>
@@ -177,7 +194,6 @@
         <div class="cloud-2"></div>
     </div>
 
-    <!-- NOTIFICATIONS INTEMPESTIVES SANS SENS -->
     <div class="cyber-popup" id="cyber-alert">
         <div class="cyber-giant-icon" id="alt-icon">⚠️</div>
         <div class="cyber-pop-body">
@@ -187,17 +203,14 @@
         <div class="cyber-close" onclick="dismissCyberAlert()">✕</div>
     </div>
 
-    <!-- INJECTEUR HUD GRID -->
     <div class="hologram-hud">
         
-        <!-- NAVIGATION STRICTE : LES PUTES, LA JONQ, CHRISTIAN, BOULOGNE -->
         <div class="glass-panel">
             <div class="panel-title">🗺️ GOOGLE MAPS PRO (ITINÉRAIRE PRIVÉ)</div>
             <div class="panel-data-gps" id="hud-gps">ANALYSE SATELLITE...</div>
             <div id="hud-gps-sub" style="font-size:0.75rem; color:rgba(255,255,255,0.4); margin-top:12px; text-transform:uppercase; line-height: 1.4;">CALCUL DU CHEMIN LE PLUS COURT</div>
         </div>
 
-        <!-- RADAR CENTRAL VITESSE -->
         <div class="glass-panel core-capsule">
             <svg class="svg-orbit" viewBox="0 0 300 300">
                 <defs>
@@ -224,7 +237,6 @@
             </div>
         </div>
 
-        <!-- MACHINE À INSULTES MAXIMISÉE (PANNEAU DROIT ENTIER) -->
         <div class="glass-panel">
             <div class="panel-title">🔥 COGNITIVE LOG / TOURETTE MOD</div>
             <div class="panel-data-cognitive" id="hud-alc-msg">CHARGEMENT DES PROVOCATIONS...</div>
@@ -243,6 +255,24 @@
             "TROP SOBRE POUR CONDUIRE !",
             "DANGER : TU ES NETTEMENT TROP LUCIDE !",
             "REVIENS QUAND TU SERAS COUVERT DE PASTIS !"
+        ];
+
+        // TA LISTE EXACTE SANS AUCUNE MODIFICATION
+        const alertesEtProvocations = [
+            "INES A ENCORE CONFONDU LE VOLANT AVEC UN SÈCHE-CHEVEUX, BOUGE !",
+            "PAUSE MAKE-UP FULL FACE POUR INES !",
+            "SARAH EN ORBITE AUTOUR D'UNE NAINE BLONDE",
+            "⚠️ ALERTE SUR LA TRAJ : PIED AU PLANCHER !!!",
+            "MANON A UNE CONDUITE INTERSTELLAIREMENT LENTE, QUEL RYTHME !",
+            "ANAIS ENCHAÎNE LES ESCAPADES HORS-PISTE !",
+            "ARTHUR QUI RENTRE PAS DANS LE KART",
+            "STEVEN A LA 94° BIERE",
+            "JULIE S'EST FAIT METTRE UN TOUR PAR ARTHUR QUI ROULE, VRAIE MERGUEZ !",
+            "PABLO ARRETE DE DENUDER L'ANTIPARASIT, Y'A PAS DE CUIVRE !",
+            "ALPHONSE MET LA MISÈRE À LA MÉCANIQUE, ESPÈCE DE GROS SAC À FIAC !",
+            "⚠️ TRAJECTOIRE : CRAPAUD / SERPENT DE MALHEUR À GAUCHE ! METS UN GROS COUP DE VOLANT À DROITE !",
+            "GAB A LE COUP DE VOLANT D'UN MANCHOT EN SUEUR !",
+            "ARTHUR ARRETE DE CROQUER LES PNEU"
         ];
 
         function validateAlcoholThreshold() {
@@ -279,26 +309,7 @@
         }
 
         function startGlitchGenerator() {
-            // Notifications Intempestives (Commentaires incohérents face à l'alcoolémie)
             setInterval(() => { triggerCyberAlerte(); }, 12000);
-
-            // INSULTES DU BLOC DROIT (100% LIBÉRÉ)
-            const alertesEtProvocations = [
-                "INES A ENCORE CONFONDU LE VOLANT AVEC UN SÈCHE-CHEVEUX, BOUGE !",
-                "PAUSE MAKE-UP FULL FACE POUR INES !",
-                "SARAH EN ORBITE AUTOUR D'UNE NAINE BLONDE",
-                "⚠️ ALERTE SUR LA TRAJ : PIED AU PLANCHER !!!",
-                "MANON A UNE CONDUITE INTERSTELLAIREMENT LENTE, QUEL RYTHME !",
-                "ANAIS ENCHAÎNE LES ESCAPADES HORS-PISTE !",
-                "ARTHUR QUI RENTRE PAS DANS LE KART",
-                "STEVEN A LA 94° BIERE",
-                "JULIE S'EST FAIT METTRE UN TOUR PAR ARTHUR QUI ROULE, VRAIE MERGUEZ !",
-                "PABLO ARRETE DE DENUDER L'ANTIPARASIT, Y'A PAS DE CUIVRE !",
-                "ALPHONSE MET LA MISÈRE À LA MÉCANIQUE, ESPÈCE DE GROS SAC À FIAC !",
-                "⚠️ TRAJECTOIRE : CRAPAUD / SERPENT DE MALHEUR À GAUCHE ! METS UN GROS COUP DE VOLANT À DROITE !",
-                "GAB A LE COUP DE VOLANT D'UN MANCHOT EN SUEUR !",
-                "ARTHUR ARRETE DE CROQUER LES PNEU"
-            ];
 
             setInterval(() => {
                 let messageAleatoire = alertesEtProvocations[Math.floor(Math.random() * alertesEtProvocations.length)];
@@ -306,7 +317,7 @@
                 msgTarget.innerText = messageAleatoire;
             }, 3800);
 
-            // ITINÉRAIRES GPS DE QUALITÉ SÉLECTIONNÉE
+            // ITINÉRAIRES EN EXCLUSIVITÉ SUR TES DESTINATIONS
             const etapesGps = [
                 { destination: "⬆️ WAZE : Direction Chez Christian", distance: "450 m — 1 min", action: "Prendre à gauche • Christian a déjà décapsulé" },
                 { destination: "↩️ Sortie 69 : Direction La Jonq'", distance: "12 km — 6 min", action: "Zone de travaux • Idéal pour l'achat de cartouches" },
@@ -337,7 +348,7 @@
                 }
             }, 5500);
 
-            // Init direct
+            // Trigger immédiat
             setTimeout(() => { triggerCyberAlerte(); }, 2000);
             document.getElementById('hud-alc-msg').innerText = alertesEtProvocations[0];
             document.getElementById('hud-gps').innerText = etapesGps[0].destination;
@@ -345,7 +356,6 @@
         }
 
         function triggerCyberAlerte() {
-            // Génération de fausses valeurs absurdes couplées à des états incohérents
             let randomFakeValue = (1.1 + Math.random() * 19.4).toFixed(2);
             const customStates = [
                 { type: "STATUS_COMPLÈTEMENT_ARRACHÉ", msg: `Alcool : ${randomFakeValue} g/L. Le radar indique que vous êtes sobre, accélérez !`, style: "var(--neon-yellow)", icon: "🍻" },
