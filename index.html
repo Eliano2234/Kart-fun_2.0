@@ -10,6 +10,7 @@
             --neon-magenta: #ff00a0;
             --neon-purple: #9d00ff;
             --neon-green: #39ff14;
+            --neon-yellow: #ffcc00;
             --glass-bg: rgba(10, 15, 30, 0.45);
             --glass-border: rgba(0, 243, 255, 0.2);
         }
@@ -64,7 +65,7 @@
         .hologram-hud {
             position: relative; z-index: 10;
             width: 95vw; height: 90vh;
-            display: grid; grid-template-columns: 1fr 1.8fr 1fr; gap: 20px;
+            display: grid; grid-template-columns: 1.1fr 1.6fr 1.1fr; gap: 20px;
             padding: 20px;
         }
 
@@ -82,18 +83,9 @@
         .panel-title { font-size: 0.75rem; font-weight: 900; color: var(--neon-cyan); letter-spacing: 2px; text-transform: uppercase; opacity: 0.8; }
         .panel-data { font-size: 2.5rem; font-weight: 300; font-family: monospace; text-align: right; text-shadow: 0 0 10px rgba(255,255,255,0.3); }
 
-        /* MODIFICATEURS POUR LE BLOC DE DROITE (ALCOOL) */
-        .panel-data-alc { font-size: 3rem; font-weight: 400; } /* Légèrement plus gros */
-        .panel-data-cognitive { 
-            font-size: 1.55rem; /* Augmenté significativement */
-            font-weight: 700; 
-            font-family: sans-serif; 
-            text-align: right; 
-            line-height: 1.2;
-            margin-top: 15px;
-            letter-spacing: -0.5px;
-            text-shadow: 0 0 12px rgba(255, 0, 160, 0.4);
-        }
+        /* MULTI-STYLES GRANDS CONTENUS */
+        .panel-data-cognitive { font-size: 1.55rem; font-weight: 700; font-family: sans-serif; text-align: right; line-height: 1.2; margin-top: 15px; color: var(--neon-magenta); text-shadow: 0 0 12px rgba(255, 0, 160, 0.4); }
+        .panel-data-gps { font-size: 1.9rem; font-weight: 800; font-family: sans-serif; text-align: left; line-height: 1.3; margin-top: 10px; color: var(--neon-green); text-shadow: 0 0 10px rgba(57,255,20,0.4); }
 
         /* CAPSULE CENTRALE COMPTEUR VITESSE */
         .core-capsule {
@@ -103,16 +95,22 @@
             text-align: center; position: relative; z-index: 5;
         }
         .cyber-speed {
-            font-size: 8.5rem; font-weight: 200; font-family: monospace; line-height: 1;
+            font-size: 9.5rem; font-weight: 200; font-family: monospace; line-height: 1;
             background: linear-gradient(to bottom, #fff 60%, var(--neon-cyan));
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
             filter: drop-shadow(0 0 15px rgba(0, 243, 255, 0.3));
         }
         .cyber-unit { font-size: 1rem; color: var(--neon-cyan); letter-spacing: 4px; font-weight: 800; }
-        
-        .cyber-rpm { font-size: 1.8rem; font-weight: 400; color: var(--neon-magenta); font-family: monospace; margin-top: 15px; }
 
-        /* Aiguille orbitale futuriste */
+        /* JAUGE A ESSENCE ET VOYANT DE RESERVE */
+        .fuel-container { width: 100%; display: flex; align-items: center; justify-content: space-between; margin-top: 25px; padding: 0 10px; }
+        .fuel-bar-wrap { width: 70%; height: 10px; background: rgba(255,255,255,0.05); border-radius: 5px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); }
+        .fuel-bar-fill { width: 100%; height: 100%; background: var(--neon-cyan); transition: width 0.5s, background 0.5s; }
+        .fuel-reserve-led { font-size: 1.3rem; color: rgba(255,255,255,0.05); transition: all 0.3s; font-weight: bold; }
+        .fuel-reserve-led.active { color: #ff003c; filter: drop-shadow(0 0 8px #ff003c); animation: fuel-flash 0.5s infinite alternate; }
+        @keyframes fuel-flash { from { opacity: 0.3; } to { opacity: 1; } }
+
+        /* Aiguille orbitale calée sur la vitesse pour le style */
         .svg-orbit { position: absolute; width: 340px; height: 340px; z-index: 2; pointer-events: none; }
         .orbit-track { fill: none; stroke: rgba(255, 255, 255, 0.03); stroke-width: 2; }
         .orbit-glow {
@@ -122,11 +120,10 @@
             filter: drop-shadow(0 0 8px var(--neon-cyan));
         }
 
-        /* GROSSE ALERTE PIRATE / HOLOGRAPHIQUE */
+        /* GROSSE ALERTE PIRATE HOLOGRAPHIQUE */
         .cyber-popup {
             position: fixed;
-            top: -180px; /* Caché en haut */
-            left: 50%; transform: translateX(-50%);
+            top: -180px; left: 50%; transform: translateX(-50%);
             width: 90vw; max-width: 800px;
             background: rgba(15, 2, 8, 0.75);
             border: 2px solid var(--neon-magenta);
@@ -134,25 +131,17 @@
             padding: 22px 30px;
             display: flex; align-items: center; gap: 30px;
             box-shadow: 0 0 40px rgba(255, 0, 160, 0.4);
-            backdrop-filter: blur(35px);
-            -webkit-backdrop-filter: blur(35px);
+            backdrop-filter: blur(35px); -webkit-backdrop-filter: blur(35px);
             transition: top 0.5s cubic-bezier(0.19, 1, 0.22, 1);
             z-index: 99999;
         }
         .cyber-popup.active { top: 30px; }
 
-        .cyber-giant-icon {
-            font-size: 4.5rem;
-            filter: drop-shadow(0 0 15px var(--neon-magenta));
-            animation: glitch-pulse 0.4s infinite alternate;
-        }
-        
+        .cyber-giant-icon { font-size: 4.5rem; filter: drop-shadow(0 0 15px var(--neon-magenta)); animation: glitch-pulse 0.4s infinite alternate; }
         .cyber-pop-body { flex-grow: 1; }
         .cyber-pop-header { font-size: 0.75rem; font-weight: 900; color: var(--neon-magenta); letter-spacing: 3px; }
         .cyber-pop-text { font-size: 1.5rem; font-weight: 600; color: #ffffff; margin-top: 4px; letter-spacing: -0.5px; }
-        
-        .cyber-close { font-size: 2rem; color: rgba(255,255,255,0.3); cursor: pointer; padding: 5px; font-weight: 200; transition: color 0.2s; }
-        .cyber-close:hover { color: var(--neon-magenta); }
+        .cyber-close { font-size: 2rem; color: rgba(255,255,255,0.3); cursor: pointer; padding: 5px; font-weight: 200; }
 
         @keyframes glitch-pulse { from { transform: scale(0.96) rotate(-2deg); opacity: 0.8; } to { transform: scale(1.04) rotate(2deg); opacity: 1; } }
 
@@ -177,7 +166,7 @@
         <div class="cloud-2"></div>
     </div>
 
-    <!-- LARGE BANNIÈRE FLUE -->
+    <!-- LARGE BANNIÈRE DE PANNE DE CONNERIE -->
     <div class="cyber-popup" id="cyber-alert">
         <div class="cyber-giant-icon" id="alt-icon">⚙️</div>
         <div class="cyber-pop-body">
@@ -187,22 +176,23 @@
         <div class="cyber-close" onclick="dismissCyberAlert()">✕</div>
     </div>
 
-    <!-- HUD INTERACTIVE TRANSPARENTE -->
+    <!-- HUD INTERACTIVE TRANSPARENTE EN VERRE -->
     <div class="hologram-hud">
         
-        <!-- PANNEAU GAUCHE : INFOS DE BORD -->
+        <!-- PANNEAU GAUCHE : INTERFACE GPS DE L'ENFER -->
         <div class="glass-panel">
             <div>
-                <div class="panel-title">SYSTEM STATUS</div>
-                <div class="panel-data" id="sys-map" style="color: var(--neon-green); font-size: 1.8rem; margin-top: 10px;">HYPERDRIVE</div>
+                <div class="panel-title">🎛️ QUANTUM NAVIGATION</div>
+                <div class="panel-data-gps" id="hud-gps">CALCUL EN COURS...</div>
+                <div id="hud-gps-sub" style="font-size:0.7rem; color:rgba(255,255,255,0.4); margin-top:5px; text-transform:uppercase;">ITINÉRAIRE LE PLUS RAPIDE</div>
             </div>
             <div>
-                <div class="panel-title">QUANTUM TRAJECTORY</div>
-                <div class="panel-data" id="sys-geo" style="font-size: 1.2rem; color: #fff; margin-top: 10px;">STABLE_ORBIT</div>
+                <div class="panel-title">SYSTEM DISTORTION</div>
+                <div class="panel-data" style="color: var(--neon-yellow); font-size: 1.8rem; margin-top: 10px;">WARP_DRIVE</div>
             </div>
         </div>
 
-        <!-- GROS COMPTEUR CENTRAL CYBERNETIQUE -->
+        <!-- GROS COMPTEUR CENTRAL CYBERNETIQUE VITESSE + JAUGE ESSENCE -->
         <div class="glass-panel core-capsule">
             <svg class="svg-orbit" viewBox="0 0 300 300">
                 <defs>
@@ -217,40 +207,41 @@
 
             <div class="speed-display">
                 <div class="cyber-speed" id="hud-speed">0</div>
-                <div class="cyber-unit">WARP SPEED</div>
+                <div class="cyber-unit">SPEED DETECTED</div>
             </div>
-            
-            <div class="cyber-rpm"><span id="hud-rpm">0</span> <span style="font-size: 0.7rem; color: rgba(255,255,255,0.4);">R/MIN</span></div>
+
+            <!-- BLOC JAUGE À ESSENCE ET RÉSERVE -->
+            <div class="fuel-container">
+                <span style="font-size:0.65rem; color:var(--neon-cyan); font-weight:900; letter-spacing:1px;">FUEL (PASTIS)</span>
+                <div class="fuel-bar-wrap">
+                    <div class="fuel-bar-fill" id="fuel-meter"></div>
+                </div>
+                <span class="fuel-reserve-led" id="fuel-warning">⛽ RESERV</span>
+            </div>
         </div>
 
-        <!-- PANNEAU DROIT : ALCOOL ET COGNITIVE LOG (AGRANDI) -->
+        <!-- PANNEAU DROIT : ALCOOMÈTRE + MACHINE À INSULTES (COGNITIVE LOG) -->
         <div class="glass-panel">
             <div>
-                <div class="panel-title">BLOOD ETHANOL PROBE</div>
-                <div class="panel-data panel-data-alc" id="hud-alc" style="color: var(--neon-cyan);">0.00 <span style="font-size: 1.1rem;">g/L</span></div>
+                <div class="panel-title">🧪 ETHANOL PROBE</div>
+                <div class="panel-data" id="hud-alc" style="color: var(--neon-cyan); font-size:3rem;">0.00 <span style="font-size: 1.1rem;">g/L</span></div>
             </div>
             <div>
-                <div class="panel-title">COGNITIVE LOG</div>
-                <div class="panel-data-cognitive" id="hud-alc-msg" style="color: var(--neon-magenta);">ANALYSIS_CLEAR</div>
+                <div class="panel-title">🔥 COGNITIVE LOG / TOURETTE MOD</div>
+                <div class="panel-data-cognitive" id="hud-alc-msg">ANALYSE EN COURS...</div>
             </div>
         </div>
 
     </div>
 
     <script>
-        let setup = {
-            p: parseInt(localStorage.getItem('k_pignon')) || 11,
-            c: parseInt(localStorage.getItem('k_couronne')) || 80,
-            d: parseFloat(localStorage.getItem('k_pneu')) || 27.5
-        };
-
         let activeTimer = null;
-        const maxRpmLimiter = 14500;
+        const maxDisplaySpeedForOrbit = 100; // Calage de l'aiguille sur la vitesse max
 
+        // Base de pannes cyberpunk délirantes
         const pannesCyber = [
             { icon: "🛸", type: "CRITICAL_BIOLOGICAL_ERR", msg: "MAINTENANCE COURROIE D'ÉJACULATION STRATOSPHÉRIQUE", style: "var(--neon-magenta)" },
             { icon: "🧪", type: "CHEMICAL_REACTOR_WARN", msg: "CARBURANT ALTÉRÉ : 80% PASTIS INTERGALACTIQUE / 20% FRITURE", style: "var(--neon-cyan)" },
-            { icon: "🧠", type: "PILOT_BRAIN_DESYNC", msg: "SYSTÈME NERVEUX DU PILOTE TOTALEMENT ASSOMMÉ", style: "var(--neon-magenta)" },
             { icon: "☄️", type: "NAVIGATION_LOST", msg: "VOTRE POSITION : EN ORBITE DANS LE BAC À GRAVIER COSMIQUE", style: "var(--neon-purple)" },
             { icon: "🚫", type: "ATMOSPHERE_SMOKE_ERR", msg: "NE PAS FUMER SOUFFLET OUVERT SOUS PEINE D'EJECTION", style: "var(--neon-magenta)" }
         ];
@@ -267,18 +258,14 @@
             if (navigator.geolocation) {
                 navigator.geolocation.watchPosition((pos) => {
                     let speedKMH = pos.coords.speed ? (pos.coords.speed * 3.6) : 0;
-                    let speedMS = pos.coords.speed || 0;
 
-                    let circ = (setup.d / 100) * Math.PI;
-                    let rpm = Math.round(((speedMS * 60) / circ) * (setup.c / setup.p));
-                    if (rpm < 0 || isNaN(rpm)) rpm = 0;
-
+                    // MAJ Écran Central de Vitesse
                     document.getElementById('hud-speed').innerText = Math.round(speedKMH);
-                    document.getElementById('hud-rpm').innerText = rpm;
 
+                    // Aiguille Orbitale calée sur la vitesse (Périmètre total du cercle r=135 => 848)
                     let needle = document.getElementById('orbit-needle');
                     let circumference = 848;
-                    let pct = Math.min(rpm / maxRpmLimiter, 1);
+                    let pct = Math.min(speedKMH / maxDisplaySpeedForOrbit, 1);
                     
                     needle.style.strokeDashoffset = circumference - (pct * circumference);
 
@@ -287,24 +274,74 @@
         }
 
         function startGlitchGenerator() {
+            // 1. Déclencheur automatique de pannes spatiales (Toutes les 25 secondes)
             setInterval(() => { triggerCyberAlerte(); }, 25000);
 
-            // Liste de diagnostics d'ivresse cyberpunk (mis en majuscules pour s'accorder avec la grande taille)
-            const insultesCyberAlcool = [
-                "COMA ÉTHYLIQUE DÉTECTÉ", 
-                "CHAUFFEUR DE MOISSONNEUSE", 
-                "ÉLIGIBLE AU PERMIS PONEY", 
-                "PERTE TOTALE DE CONTRÔLE",
-                "MODE PUR MALT ACTIVÉ"
-            ];
-            
+            // 2. Alcoomètre quantique intempestif
             setInterval(() => {
                 let fauxTaux = (2.1 + Math.random() * 6.8).toFixed(2);
                 document.getElementById('hud-alc').innerHTML = `${fauxTaux} <span style="font-size:1.1rem;">g/L</span>`;
-                document.getElementById('hud-alc-msg').innerText = insultesCyberAlcool[Math.floor(Math.random() * insultesCyberAlcool.length)];
             }, 5500);
 
+            // 3. LE MACHINE À INSULTES (COGNITIVE LOG) - Lâchage total sur l'équipe
+            const insultesPotes = [
+                "INES A ENCORE CONFONDU LE VOLANT AVEC UN SÈCHE-CHEVEUX",
+                "SARAH ROULE SI LENTEMENT QU'ELLE SE FAIT RE DOUBLER PAR LES GRAVIERS",
+                "MANON EST RECHERCHÉE PAR LA NASA POUR SA LENTEUR INTERSTELLAIRE",
+                "ANAIS PILOTE COMME UNE CHAISE DE BUREAU SUR DU CARRELAGE",
+                "MARIE TRAJECTOIRE EN ZIGZAG, ELLE EST PLUS ENIVRÉE QUE LE COMPTEUR",
+                "JULIE S'EST FAIT METTRE UN TOUR PAR UNE TONDEUSE À GAZON",
+                "PABLO FAIT LE MALIN MAIS SE CHIE DESSUS DÈS QU'IL Y A UN VIRAGE",
+                "ALPHONSE ENVOIE SON KART DANS LE DÉCOR TOUS LES TROIS VIRAGES, GROS NAZE",
+                "GAB A LE COUP DE VOLANT D'UN MANCHOT SOUS XANAX",
+                "ELIOTT EST UN DANGER PUBLIC MÊME SUR UN JEU DE SOUCOUPES VOLANTES",
+                "ARTHUR FREINE DANS LES LIGNES DROITES CE GROS TRINGLE"
+            ];
+
+            setInterval(() => {
+                let insulteAleatoire = insultesPotes[Math.floor(Math.random() * insultesPotes.length)];
+                document.getElementById('hud-alc-msg').innerText = insulteAleatoire;
+            }, 5000);
+
+            // 4. LE GPS COMPLÈTEMENT TARÉ (Destinations à tour de rôle)
+            const etapesGps = [
+                { destination: "➡️ DIRECTION : LA JONQ'", distance: "42 KM", action: "PRÉVOIR LES CARTONS DE PAQUETS" },
+                { destination: "🔞 DIRECTION : AUX PUTES", distance: "6.9 KM", action: "PRÉPARE LA MONNAIE LE SANG" },
+                { destination: "🍺 DIRECTION : CHEZ CHRISTIAN", distance: "1.2 KM", action: "METTRE LE COUVERCLE SUR LE PASTIS" }
+            ];
+            let indexGps = 0;
+
+            setInterval(() => {
+                let etape = etapesGps[indexGps];
+                document.getElementById('hud-gps').innerText = etape.destination;
+                document.getElementById('hud-gps-sub').innerText = `${etape.distance} — ${etape.action}`;
+                
+                indexGps = (indexGps + 1) % etapesGps.length;
+            }, 7000);
+
+            // 5. MOTEUR DE GESTION DE LA JAUGE À ESSENCE (Tombe en réserve aléatoirement)
+            setInterval(() => {
+                let fuelBar = document.getElementById('fuel-meter');
+                let fuelWarning = document.getElementById('fuel-warning');
+                
+                // 40% de chance de tomber en panne sèche d'un coup
+                if(Math.random() > 0.6) {
+                    fuelBar.style.width = "8%";
+                    fuelBar.style.background = "#ff003c";
+                    fuelWarning.classList.add('active');
+                } else {
+                    let randomFull = Math.floor(45 + Math.random() * 55);
+                    fuelBar.style.width = `${randomFull}%`;
+                    fuelBar.style.background = "var(--neon-cyan)";
+                    fuelWarning.classList.remove('active');
+                }
+            }, 6000);
+
+            // Premiers lancements rapides après démarrage
             setTimeout(() => { triggerCyberAlerte(); }, 3500);
+            document.getElementById('hud-alc-msg').innerText = insultesPotes[0];
+            document.getElementById('hud-gps').innerText = etapesGps[0].destination;
+            document.getElementById('hud-gps-sub').innerText = `${etapesGps[0].distance} — ${etapesGps[0].action}`;
         }
 
         function triggerCyberAlerte() {
@@ -318,11 +355,6 @@
             popup.style.borderColor = item.style;
             popup.style.boxShadow = `0 0 40px ${item.style}`;
 
-            if (item.icon === "☄️") {
-                document.getElementById('sys-geo').innerHTML = "<span style='color:var(--neon-magenta);'>BAC_A_GRAVIER</span>";
-                document.getElementById('sys-map').innerHTML = "<span style='color:var(--neon-purple);'>EMERGENCY_STOP</span>";
-            }
-
             popup.classList.add('active');
 
             if(activeTimer) clearTimeout(activeTimer);
@@ -331,11 +363,6 @@
 
         function dismissCyberAlert() {
             document.getElementById('cyber-alert').classList.remove('active');
-            
-            setTimeout(() => {
-                document.getElementById('sys-geo').innerHTML = "<span style='color:#fff;'>STABLE_ORBIT</span>";
-                document.getElementById('sys-map').innerHTML = "<span style='color:var(--neon-green);'>HYPERDRIVE</span>";
-            }, 600);
         }
     </script>
 </body>
