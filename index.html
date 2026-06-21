@@ -84,7 +84,7 @@
         .panel-data { font-size: 2.5rem; font-weight: 300; font-family: monospace; text-align: right; text-shadow: 0 0 10px rgba(255,255,255,0.3); }
 
         /* MULTI-STYLES GRANDS CONTENUS */
-        .panel-data-cognitive { font-size: 1.55rem; font-weight: 700; font-family: sans-serif; text-align: right; line-height: 1.2; margin-top: 15px; color: var(--neon-magenta); text-shadow: 0 0 12px rgba(255, 0, 160, 0.4); }
+        .panel-data-cognitive { font-size: 1.55rem; font-weight: 700; font-family: sans-serif; text-align: right; line-height: 1.2; margin-top: 15px; color: var(--neon-magenta); text-shadow: 0 0 12px rgba(255, 0, 160, 0.4); transition: color 0.2s; }
         .panel-data-gps { font-size: 1.9rem; font-weight: 800; font-family: sans-serif; text-align: left; line-height: 1.3; margin-top: 10px; color: var(--neon-green); text-shadow: 0 0 10px rgba(57,255,20,0.4); }
 
         /* CAPSULE CENTRALE COMPTEUR VITESSE */
@@ -110,7 +110,7 @@
         .fuel-reserve-led.active { color: #ff003c; filter: drop-shadow(0 0 8px #ff003c); animation: fuel-flash 0.5s infinite alternate; }
         @keyframes fuel-flash { from { opacity: 0.3; } to { opacity: 1; } }
 
-        /* Aiguille orbitale calée sur la vitesse pour le style */
+        /* Aiguille orbitale calée sur la vitesse */
         .svg-orbit { position: absolute; width: 340px; height: 340px; z-index: 2; pointer-events: none; }
         .orbit-track { fill: none; stroke: rgba(255, 255, 255, 0.03); stroke-width: 2; }
         .orbit-glow {
@@ -236,9 +236,8 @@
 
     <script>
         let activeTimer = null;
-        const maxDisplaySpeedForOrbit = 100; // Calage de l'aiguille sur la vitesse max
+        const maxDisplaySpeedForOrbit = 100;
 
-        // Base de pannes cyberpunk délirantes
         const pannesCyber = [
             { icon: "🛸", type: "CRITICAL_BIOLOGICAL_ERR", msg: "MAINTENANCE COURROIE D'ÉJACULATION STRATOSPHÉRIQUE", style: "var(--neon-magenta)" },
             { icon: "🧪", type: "CHEMICAL_REACTOR_WARN", msg: "CARBURANT ALTÉRÉ : 80% PASTIS INTERGALACTIQUE / 20% FRITURE", style: "var(--neon-cyan)" },
@@ -258,52 +257,58 @@
             if (navigator.geolocation) {
                 navigator.geolocation.watchPosition((pos) => {
                     let speedKMH = pos.coords.speed ? (pos.coords.speed * 3.6) : 0;
-
-                    // MAJ Écran Central de Vitesse
                     document.getElementById('hud-speed').innerText = Math.round(speedKMH);
 
-                    // Aiguille Orbitale calée sur la vitesse (Périmètre total du cercle r=135 => 848)
                     let needle = document.getElementById('orbit-needle');
                     let circumference = 848;
                     let pct = Math.min(speedKMH / maxDisplaySpeedForOrbit, 1);
-                    
                     needle.style.strokeDashoffset = circumference - (pct * circumference);
-
                 }, () => {}, { enableHighAccuracy: true });
             }
         }
 
         function startGlitchGenerator() {
-            // 1. Déclencheur automatique de pannes spatiales (Toutes les 25 secondes)
             setInterval(() => { triggerCyberAlerte(); }, 25000);
 
-            // 2. Alcoomètre quantique intempestif
             setInterval(() => {
                 let fauxTaux = (2.1 + Math.random() * 6.8).toFixed(2);
                 document.getElementById('hud-alc').innerHTML = `${fauxTaux} <span style="font-size:1.1rem;">g/L</span>`;
             }, 5500);
 
-            // 3. LE MACHINE À INSULTES (COGNITIVE LOG) - Lâchage total sur l'équipe
-            const insultesPotes = [
-                "INES A ENCORE CONFONDU LE VOLANT AVEC UN SÈCHE-CHEVEUX",
-                "SARAH ROULE SI LENTEMENT QU'ELLE SE FAIT RE DOUBLER PAR LES GRAVIERS",
-                "MANON EST RECHERCHÉE PAR LA NASA POUR SA LENTEUR INTERSTELLAIRE",
-                "ANAIS PILOTE COMME UNE CHAISE DE BUREAU SUR DU CARRELAGE",
-                "MARIE TRAJECTOIRE EN ZIGZAG, ELLE EST PLUS ENIVRÉE QUE LE COMPTEUR",
-                "JULIE S'EST FAIT METTRE UN TOUR PAR UNE TONDEUSE À GAZON",
-                "PABLO FAIT LE MALIN MAIS SE CHIE DESSUS DÈS QU'IL Y A UN VIRAGE",
-                "ALPHONSE ENVOIE SON KART DANS LE DÉCOR TOUS LES TROIS VIRAGES, GROS NAZE",
-                "GAB A LE COUP DE VOLANT D'UN MANCHOT SOUS XANAX",
-                "ELIOTT EST UN DANGER PUBLIC MÊME SUR UN JEU DE SOUCOUPES VOLANTES",
-                "ARTHUR FREINE DANS LES LIGNES DROITES CE GROS TRINGLE"
+            // MACHINE À INSULTES (COGNITIVE LOG) + COUPS DE VOLANT SERPENTS
+            const alertesEtProvocations = [
+                "INES A ENCORE CONFONDU LE VOLANT AVEC UN SÈCHE-CHEVEUX, BOUGE !",
+                "SARAH ROULE COMME UNE GROSSE TRINGLE, MÊME LES GRAVIERS LA DOUBLENT !",
+                "⚠️ ALERTE FLORE : ENORME SERPENT DE MERDE SUR LA TRAJECTOIRE ! ÉCART IMMÉDIAT À DROITE POUR L'EXPLOSER !",
+                "MANON A UNE CONDUITE INTERSTELLAIREMENT LENTE, VRAIMENT UN GLANDU !",
+                "ANAIS PILOTE COMME UNE CHAISE DE BUREAU SUR DU VERGLAS, C'EST AFFLIGEANT !",
+                "MARIE EST TOTALEMENT SCHLACK, ELLE LABOURE LE DECOR !",
+                "JULIE S'EST FAIT METTRE UN TOUR PAR UNE TONDEUSE, VRAIE MERGUEZ !",
+                "PABLO FAIT LE CHAUD DU 92I MAIS ÇA SE CHIE DESSUS AU PREMIER VIRAGE !",
+                "ALPHONSE MET LA MISÈRE À LA MÉCANIQUE, ESPÈCE DE GROS SAC À FIAC !",
+                "⚠️ TRAJECTOIRE : CRAPAUD / SERPENT DE MALHEUR À GAUCHE ! METS UN GROS COUP DE VOLANT À DROITE !",
+                "GAB A LE COUP DE VOLANT D'UN MANCHOT SOUS AMNÉSIQUE !",
+                "ELIOTT REND LE VOLANT ET METS-TOI AU JARDINAGE, GROS NAZE !",
+                "ARTHUR FREINE DANS LES LIGNES DROITES, QUEL ENCULÉ DE PREMIÈRE !",
+                "SIMBERTOUT EN ACTION : ÇA SOUFFLE DANS LE BALLON ET ÇA EXPLOSE LES CHRONOS !"
             ];
 
             setInterval(() => {
-                let insulteAleatoire = insultesPotes[Math.floor(Math.random() * insultesPotes.length)];
-                document.getElementById('hud-alc-msg').innerText = insulteAleatoire;
-            }, 5000);
+                let messageAleatoire = alertesEtProvocations[Math.floor(Math.random() * alertesEtProvocations.length)];
+                let msgTarget = document.getElementById('hud-alc-msg');
+                msgTarget.innerText = messageAleatoire;
+                
+                if(messageAleatoire.includes("SERPENT")) {
+                    msgTarget.style.color = "#ff003c";
+                    msgTarget.style.textShadow = "0 0 15px #ff003c";
+                    setTimeout(() => { 
+                        msgTarget.style.color = "var(--neon-magenta)"; 
+                        msgTarget.style.textShadow = "0 0 12px rgba(255, 0, 160, 0.4)";
+                    }, 3500);
+                }
+            }, 4500);
 
-            // 4. LE GPS COMPLÈTEMENT TARÉ (Destinations à tour de rôle)
+            // GPS INTERACTIF
             const etapesGps = [
                 { destination: "➡️ DIRECTION : LA JONQ'", distance: "42 KM", action: "PRÉVOIR LES CARTONS DE PAQUETS" },
                 { destination: "🔞 DIRECTION : AUX PUTES", distance: "6.9 KM", action: "PRÉPARE LA MONNAIE LE SANG" },
@@ -315,18 +320,16 @@
                 let etape = etapesGps[indexGps];
                 document.getElementById('hud-gps').innerText = etape.destination;
                 document.getElementById('hud-gps-sub').innerText = `${etape.distance} — ${etape.action}`;
-                
                 indexGps = (indexGps + 1) % etapesGps.length;
             }, 7000);
 
-            // 5. MOTEUR DE GESTION DE LA JAUGE À ESSENCE (Tombe en réserve aléatoirement)
+            // RECHARGE / PANNE DE SÈCHE JAUGE À ESSENCE (PASTIS)
             setInterval(() => {
                 let fuelBar = document.getElementById('fuel-meter');
                 let fuelWarning = document.getElementById('fuel-warning');
                 
-                // 40% de chance de tomber en panne sèche d'un coup
                 if(Math.random() > 0.6) {
-                    fuelBar.style.width = "8%";
+                    fuelBar.style.width = "6%";
                     fuelBar.style.background = "#ff003c";
                     fuelWarning.classList.add('active');
                 } else {
@@ -337,16 +340,14 @@
                 }
             }, 6000);
 
-            // Premiers lancements rapides après démarrage
             setTimeout(() => { triggerCyberAlerte(); }, 3500);
-            document.getElementById('hud-alc-msg').innerText = insultesPotes[0];
+            document.getElementById('hud-alc-msg').innerText = alertesEtProvocations[0];
             document.getElementById('hud-gps').innerText = etapesGps[0].destination;
             document.getElementById('hud-gps-sub').innerText = `${etapesGps[0].distance} — ${etapesGps[0].action}`;
         }
 
         function triggerCyberAlerte() {
             let item = pannesCyber[Math.floor(Math.random() * pannesCyber.length)];
-            
             let popup = document.getElementById('cyber-alert');
             document.getElementById('alt-icon').innerText = item.icon;
             document.getElementById('alt-type').innerText = item.type;
@@ -354,7 +355,6 @@
 
             popup.style.borderColor = item.style;
             popup.style.boxShadow = `0 0 40px ${item.style}`;
-
             popup.classList.add('active');
 
             if(activeTimer) clearTimeout(activeTimer);
