@@ -3,33 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>SIMBERTOUT - VIRTUAL COCKPIT FUN</title>
+    <title>SIMBERTOUT - RACING DISPLAY PRO</title>
     <style>
         :root {
-            --bg-dark: #020204;
+            --bg-pro: #08090c;
+            --panel-pro: #111318;
+            --panel-border: #1f232d;
             --neon-red: #ff003c;
             --neon-green: #00ff66;
             --neon-blue: #00d2ff;
-            --neon-orange: #ffaa00;
-            --text-main: #ffffff;
+            --neon-yellow: #ffcc00;
+            --text-gray: #7a8293;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-user-select: none; }
         
         body { 
-            background: radial-gradient(circle at center, #0a0a16 0%, var(--bg-dark) 100%); 
-            color: var(--text-main); 
-            font-family: '-apple-system', BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
+            background: var(--bg-pro); 
+            color: #ffffff; 
+            font-family: 'Arial', sans-serif; 
             overflow: hidden; 
             width: 100vw; 
             height: 100vh;
             display: flex;
             flex-direction: column;
-            justify-content: center;
-            align-items: center;
+            justify-content: space-between;
+            padding: 10px 15px;
         }
 
-        /* CITATION D'OUVERTURE */
+        /* CITATION INITIALE */
         #ios-lockout {
             position: fixed; top:0; left:0; width:100vw; height:100vh;
             background: #000; z-index: 99999; display: flex; flex-direction: column;
@@ -39,168 +41,169 @@
         .auteur { font-size: 0.9rem; color: #666; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 40px; }
         #ios-lockout button {
             background: transparent; color: white; font-weight: bold; padding: 12px 35px;
-            border: 1px solid white; border-radius: 25px; font-size: 1rem; cursor: pointer; transition: all 0.3s;
-        }
-        #ios-lockout button:active { background: #fff; color: #000; }
-
-        /* ÉCRAN PRINCIPAL : EFFET COCKPIT UNIQUE ÉPURÉ */
-        .cockpit-container {
-            position: relative;
-            width: 100vw;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            border: 1px solid white; border-radius: 4px; font-size: 1rem; cursor: pointer; text-transform: uppercase;
         }
 
-        /* COMPTEUR CENTRAL */
-        .gauge-cluster {
-            position: relative;
-            width: 280px;
-            height: 280px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-
-        /* Cercle SVG pour l'aiguille RPM */
-        .gauge-svg {
-            position: absolute;
-            top: 0; left: 0;
+        /* -------------------------------------------
+           BARRE DE LEDS SÉQUENTIELLE (SHIFT LIGHTS) 
+        ------------------------------------------- */
+        .shift-lights {
+            display: grid;
+            grid-template-columns: repeat(10, 1fr);
+            gap: 6px;
             width: 100%;
-            height: 100%;
-            transform: rotate(-90deg); /* Démarrage de l'aiguille en haut ou ajusté */
-        }
-        .gauge-track {
-            fill: none;
-            stroke: rgba(255, 255, 255, 0.04);
-            stroke-width: 6;
-        }
-        .gauge-needle {
-            fill: none;
-            stroke: var(--neon-blue);
-            stroke-width: 6;
-            stroke-linecap: round;
-            stroke-dasharray: 754; /* 2 * PI * r (r=120) */
-            stroke-dashoffset: 754;
-            transition: stroke-dashoffset 0.1s ease-out, stroke 0.3s;
-        }
-
-        /* Infos numériques au centre du cercle */
-        .gauge-digital {
-            text-align: center;
-            z-index: 10;
-            margin-top: -10px;
-        }
-        .speed-value {
-            font-size: 5.5rem;
-            font-weight: 800;
-            font-family: monospace;
-            line-height: 1;
-            letter-spacing: -2px;
-        }
-        .speed-unit {
-            font-size: 0.8rem;
-            color: #555;
-            text-transform: uppercase;
-            font-weight: 700;
-            letter-spacing: 1px;
-            display: block;
-            margin-top: -5px;
+            height: 14px;
             margin-bottom: 5px;
         }
-        .rpm-value {
+        .led {
+            background: #1a1d24;
+            border-radius: 3px;
+            transition: background 0.05s ease;
+        }
+        /* Couleurs des leds de course */
+        .led.green.active { background: var(--neon-green); box-shadow: 0 0 10px var(--neon-green); }
+        .led.yellow.active { background: var(--neon-yellow); box-shadow: 0 0 10px var(--neon-yellow); }
+        .led.red.active { background: var(--neon-red); box-shadow: 0 0 10px var(--neon-red); }
+
+        /* -------------------------------------------
+           GRILLE DE TÉLÉMÉTRIE STYLE MOTEC / AIM
+        ------------------------------------------- */
+        .telemetry-grid {
+            display: grid;
+            grid-template-columns: 1fr 2fr 1fr;
+            gap: 10px;
+            flex-grow: 1;
+            align-items: center;
+        }
+
+        .data-box {
+            background: var(--panel-pro);
+            border: 1px solid var(--panel-border);
+            border-radius: 4px;
+            padding: 10px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+        }
+        .data-label {
+            font-size: 0.7rem;
+            color: var(--text-gray);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .data-value {
+            font-size: 2.2rem;
+            font-weight: 700;
+            font-family: 'Courier New', monospace;
+            color: #ffffff;
+            text-align: right;
+        }
+
+        /* BLOC CENTRAL COMPTEUR */
+        .center-cluster {
+            display: grid;
+            grid-template-rows: 1.8fr 0.7fr;
+            gap: 10px;
+            height: 100%;
+            position: relative;
+        }
+        
+        .speed-box {
+            background: var(--panel-pro);
+            border: 1px solid var(--panel-border);
+            border-radius: 4px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+        .speed-box .data-label { position: absolute; top: 10px; left: 12px; }
+        
+        .big-speed {
+            font-size: 7.5rem;
+            font-weight: 900;
+            font-family: 'Arial Black', sans-serif;
+            line-height: 1;
+            letter-spacing: -3px;
+        }
+        .big-speed-unit {
             font-size: 1.2rem;
-            font-weight: 600;
-            color: var(--neon-blue);
-            font-family: monospace;
+            color: var(--text-gray);
+            font-weight: 700;
+            margin-left: 5px;
+            align-self: flex-end;
+            margin-bottom: 15px;
         }
 
-        /* COMPTEUR ALCOOLEMIE ET ACCESSOIRES DISCRETS SUR LES CÔTÉS */
-        .side-info {
+        /* Arc de cercle RPM ultra-pro entourant la vitesse */
+        .rpm-ring-svg {
             position: absolute;
-            bottom: 25px;
-            font-family: monospace;
-            font-size: 0.8rem;
-            color: #444;
-            text-align: center;
+            width: 100%;
+            height: 100%;
+            top: 0; left: 0;
+            pointer-events: none;
         }
-        .side-left { left: 40px; text-align: left; }
-        .side-right { right: 40px; text-align: right; }
-        .amber-text { color: var(--neon-orange); font-weight: bold; }
+        .rpm-track { fill: none; stroke: rgba(255,255,255,0.02); stroke-width: 4; }
+        .rpm-bar { 
+            fill: none; stroke: var(--neon-blue); stroke-width: 4; 
+            stroke-dasharray: 660; stroke-dashoffset: 660;
+            transition: stroke-dashoffset 0.08s ease-out, stroke 0.2s;
+        }
 
-        /* BANNIÈRES DE VOYANTS DYNAMIQUES (POP-UP S'ALLUMANT SUR TOUT L'ÉCRAN) */
-        .alert-popup {
-            position: absolute;
-            top: -100px; /* Caché au début */
+        .rpm-footer-box {
+            background: #151821;
+            border: 1px solid var(--panel-border);
+            border-radius: 4px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 15px;
+        }
+        .big-rpm { font-family: monospace; font-size: 2rem; font-weight: 700; color: var(--neon-blue); }
+
+        /* -------------------------------------------
+           BANNIÈRE DE NOTIFICATION PLUS GROSSE
+        ------------------------------------------- */
+        .alert-banner {
+            position: fixed;
+            top: -140px; /* Caché plus haut */
             left: 50%;
             transform: translateX(-50%);
-            width: 380px;
-            background: rgba(10, 5, 5, 0.92);
-            border: 1px solid rgba(255, 0, 60, 0.2);
-            backdrop-filter: blur(15px);
-            border-radius: 30px;
-            padding: 10px 20px;
+            width: 92vw;
+            max-width: 750px;
+            background: #0d0103;
+            border: 3px solid var(--neon-red);
+            border-radius: 6px;
+            padding: 16px 24px;
             display: flex;
             align-items: center;
-            gap: 15px;
-            box-shadow: 0 15px 30px rgba(0,0,0,0.5);
-            transition: top 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), border-color 0.3s;
-            z-index: 9999;
+            gap: 25px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8), inset 0 0 20px rgba(255, 0, 60, 0.2);
+            transition: top 0.4s cubic-bezier(0.075, 0.82, 0.165, 1);
+            z-index: 99999;
         }
-        .alert-popup.active {
-            top: 20px; /* Descend à l'écran */
-        }
-        
-        /* Gros icone du voyant */
-        .alert-icon {
-            font-size: 2.2rem;
-            width: 50px;
-            height: 50px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.03);
-        }
-        
-        .alert-content {
-            flex-grow: 1;
-        }
-        .alert-title {
-            font-size: 0.65rem;
-            text-transform: uppercase;
-            font-weight: 700;
-            color: #666;
-            letter-spacing: 0.5px;
-        }
-        .alert-msg {
-            font-size: 0.85rem;
-            font-weight: 600;
-            color: #fff;
-            margin-top: 2px;
-        }
-        
-        .alert-close {
-            font-size: 1.1rem;
-            color: #444;
-            cursor: pointer;
-            padding: 5px;
-            font-weight: bold;
-        }
-        .alert-close:active { color: #fff; }
+        .alert-banner.active { top: 25px; } /* Descente */
 
-        /* Couleurs thématiques des alertes */
-        .alert-popup.danger { border-color: rgba(255, 0, 60, 0.4); box-shadow: 0 10px 25px rgba(255, 0, 60, 0.15); }
-        .alert-popup.danger .alert-icon { color: var(--neon-red); text-shadow: 0 0 10px var(--neon-red); }
+        /* Très gros logo de voyant de sport */
+        .alert-big-icon {
+            font-size: 3.5rem; /* Augmenté */
+            animation: pulse-glow 0.5s infinite alternate;
+        }
         
-        .alert-popup.warning { border-color: rgba(255, 170, 0, 0.4); box-shadow: 0 10px 25px rgba(255, 170, 0, 0.15); }
-        .alert-popup.warning .alert-icon { color: var(--neon-orange); text-shadow: 0 0 10px var(--neon-orange); }
+        .alert-body { flex-grow: 1; }
+        .alert-header { font-size: 0.8rem; font-weight: 800; color: var(--neon-red); letter-spacing: 2px; text-transform: uppercase; }
+        .alert-text { font-size: 1.3rem; font-weight: 700; color: #ffffff; margin-top: 4px; letter-spacing: -0.5px; } /* Augmenté */
+        
+        .alert-close-btn { font-size: 1.8rem; color: #4e525e; cursor: pointer; padding: 5px; }
+        .alert-close-btn:active { color: #fff; }
 
-        /* CONFIG HIDDEN BAR IN BOTTOM */
-        .config-bar { position: fixed; bottom: 0; width: 100vw; height: 15px; opacity: 0; display: flex; justify-content: center; gap: 10px; }
-        .config-bar input { width: 30px; }
+        @keyframes pulse-glow { from { opacity: 0.4; transform: scale(0.95); } to { opacity: 1; transform: scale(1.05); } }
+
+        /* CONFIG DISCRÈTE BAS DE PAGE */
+        .bottom-bar { font-size: 0.65rem; color: #2d3139; text-align: center; padding-top: 5px; }
 
         #portrait-warning { display: none; position: fixed; top:0; left:0; width:100vw; height:100vh; background: #000; z-index: 999999; justify-content: center; align-items: center; }
         @media (orientation: portrait) { #portrait-warning { display: flex; } }
@@ -208,185 +211,206 @@
 </head>
 <body>
 
-    <div id="portrait-warning"><h3>🔄 METS L'HORIZON AU PAS, PILOTE !</h3></div>
+    <div id="portrait-warning"><h3>🔄 ROTATION RETINA PROTOCOL REQUIRED</h3></div>
 
-    <!-- CITATION FIXÉE PAR L.F.ILLIOL -->
+    <!-- CITATION OBLIGATOIRE -->
     <div id="ios-lockout">
         <div class="citation">"Le problème de notre drapeau, c'est que le blanc est au milieu."</div>
         <div class="auteur">L.F.illiol</div>
-        <button onclick="activerLeBordel()">METTRE LE CONTACT</button>
+        <button onclick="bootSystemPro()">IGNITION / START</button>
     </div>
 
-    <!-- BANNIÈRE DE VOYANT POP-UP (STYLE ENREGISTREMENT SYSTEME) -->
-    <div class="alert-popup danger" id="popup-alerte">
-        <div class="alert-icon" id="pop-icon">⚙️</div>
-        <div class="alert-content">
-            <div class="alert-title" id="pop-type">ALERTE SYSTÈME</div>
-            <div class="alert-msg" id="pop-text">Maintenance Courroie d'éjaculation requise.</div>
+    <!-- LARGE BANNIÈRE DE TÉLÉMÉTRIE FAUTIVE -->
+    <div class="alert-banner" id="banner-system">
+        <div class="alert-big-icon" id="b-icon">⚙️</div>
+        <div class="alert-body">
+            <div class="alert-header" id="b-type">SYS_ERR_CRITICAL</div>
+            <div class="alert-text" id="b-text">MAINTENANCE COURROIE D'ÉJACULATION REQUISE</div>
         </div>
-        <div class="alert-close" onclick="dismissAlerte()">✕</div>
+        <div class="alert-close-btn" onclick="closeBanner()">✕</div>
     </div>
 
-    <!-- LE COCKPIT NUMÉRIQUE -->
-    <div class="cockpit-container">
+    <!-- BARRE DE LEDS SÉQUENTIELLE AUTOMATIQUE -->
+    <div class="shift-lights" id="lights-row">
+        <div class="led green"></div><div class="led green"></div><div class="led green"></div><div class="led green"></div>
+        <div class="led yellow"></div><div class="led yellow"></div><div class="led yellow"></div>
+        <div class="led red"></div><div class="led red"></div><div class="led red"></div>
+    </div>
+
+    <!-- GRILLE PROFESSIONNELLE -->
+    <div class="telemetry-grid">
         
-        <!-- COMPTEUR CENTRAL STYLE VOITURE MODERNE -->
-        <div class="gauge-cluster">
-            <svg class="gauge-svg" viewBox="0 0 260 260">
-                <!-- Piste de fond grise transparente -->
-                <circle class="gauge-track" cx="130" cy="130" r="120"></circle>
-                <!-- Aiguille circulaire de couleur -->
-                <circle class="gauge-needle" id="needle-rpm" cx="130" cy="130" r="120"></circle>
-            </svg>
-            
-            <div class="gauge-digital">
-                <div class="speed-value" id="fun-speed">0</div>
-                <span class="speed-unit">km/h</span>
-                <div class="rpm-value"><span id="fun-rpm">0</span> <span style="font-size:0.65rem; color:#444;">RPM</span></div>
+        <!-- BLOC GAUCHE : STATUTS MOTEUR -->
+        <div style="display: grid; grid-template-rows: 1fr 1fr; gap: 10px; height: 100%;">
+            <div class="data-box">
+                <div class="data-label">CHASSIS MAP</div>
+                <div class="data-value" id="val-map" style="color: var(--neon-green);">RACE+</div>
+            </div>
+            <div class="data-box">
+                <div class="data-label">TRAJECTORY / GPS</div>
+                <div class="data-value" id="val-gps" style="font-size: 1.4rem; padding-top:10px;">TRACK_OK</div>
             </div>
         </div>
 
-        <!-- INFOS ANNEXES TRÈS DISCRÈTES AUX QUATRE COINS POUR ÉPURER -->
-        <div class="side-info side-left">
-            <span style="color:#333;">PILOTE STATUS :</span> <span id="pilote-status" style="color:#666;">ALERTE FINIE</span><br>
-            <span style="color:#333;">GÉOLOC :</span> <span id="geoloc-status" style="color:#666;">SUR LA PISTE</span>
+        <!-- BLOC CENTRAL : DASHBOARD PORSCHE / MOTEC -->
+        <div class="center-cluster">
+            <div class="speed-box">
+                <div class="data-label">VEHICLE SPEED</div>
+                
+                <!-- Arc de cercle RPM pro autour de la vitesse -->
+                <svg class="rpm-ring-svg" viewBox="0 0 200 200">
+                    <path class="rpm-track" d="M 30,165 A 80,80 0 1,1 170,165" />
+                    <path class="rpm-bar" id="rpm-curve" d="M 30,165 A 80,80 0 1,1 170,165" />
+                </svg>
+
+                <div class="big-speed" id="main-speed">0</div>
+                <div class="big-speed-unit">KM/H</div>
+            </div>
+            <div class="rpm-footer-box">
+                <div class="data-label" style="margin: 0;">ENGINE SPEED</div>
+                <div class="big-rpm"><span id="main-rpm">0</span> <span style="font-size:0.8rem; color:var(--text-gray);">RPM</span></div>
+            </div>
         </div>
 
-        <div class="side-info side-right">
-            <span style="color:#333;">ALCOOMÉTRIE :</span> <span id="fun-alcool" class="amber-text">0.00 g/L</span><br>
-            <span id="fun-alcool-msg" style="font-size:0.6rem; color:#444;">ÉVALUATION EN COURS</span>
+        <!-- BLOC DROIT : ETHANOL & LOGS BIOMÉTRIQUES -->
+        <div style="display: grid; grid-template-rows: 1fr 1fr; gap: 10px; height: 100%;">
+            <div class="data-box">
+                <div class="data-label">ALCOHOLO-PROBE v4</div>
+                <div class="data-value" id="val-alc" style="color: var(--neon-yellow);">0.00 <span style="font-size:1rem;">g/L</span></div>
+            </div>
+            <div class="data-box">
+                <div class="data-label">PILOTE CRITICAL INDEX</div>
+                <div class="data-value" id="val-pilot-status" style="font-size: 1.2rem; color: #fff; padding-top:12px;">CLEAR</div>
+            </div>
         </div>
 
     </div>
 
-    <!-- CONFIGURATION TECHNIQUE DISCRÈTE (Pour le calcul RPM exact arrière-plan) -->
-    <div class="config-bar">
-        <input type="number" id="cfg-p" value="11">
-        <input type="number" id="cfg-c" value="80">
-        <input type="number" id="cfg-d" value="27.5">
-    </div>
+    <div class="bottom-bar">SIMBERTOUT TELEMETRY SYSTEM v2.8 — TRACK PROTOCOL ACTIVE</div>
 
     <script>
+        // Paramètres techniques cachés inchangés pour le calcul exact des RPM
         let setup = {
             p: parseInt(localStorage.getItem('k_pignon')) || 11,
             c: parseInt(localStorage.getItem('k_couronne')) || 80,
             d: parseFloat(localStorage.getItem('k_pneu')) || 27.5
         };
 
-        let currentRunTimeout = null;
-        const maxDisplayRpm = 14000; // Seuil max théorique du kart pour l'aiguille
+        let bannerTimeout = null;
+        const maxDisplayRpm = 14500;
 
-        // Liste des conneries de voyants avec leurs logos et types
-        const banquesAlertes = [
-            { icon: "⚙️", type: "DANGER CRITIQUE", msg: "Maintenance Courroie d'éjaculation !", style: "danger" },
-            { icon: "🍺", type: "ALERTE CARBURATION", msg: "Mélange détecté : 80% Pastis / 20% Friture", style: "warning" },
-            { icon: "🚨", type: "SÉCURITÉ PILOTE", msg: "Alerte : Système nerveux du pilote défaillant", style: "danger" },
-            { icon: "🪨", type: "INFO GPS", msg: "Alerte trajectoire : En plein dans le bac à gravier", style: "warning" },
-            { icon: "🚭", type: "CABINE SÉCURITÉ", msg: "Interdiction de fumer le soufflet ouvert ! (Amende 135€)", style: "danger" },
-            { icon: "🥴", type: "ANALYSE BIOMÉTRIQUE", msg: "Taux de connerie dans le sang supérieur à la limite légale", style: "warning" }
+        // Base de données des pannes absurdes
+        const listePannesPro = [
+            { icon: "🔞", type: "SYS_CRITICAL_ERROR", msg: "MAINTENANCE COURROIE D'ÉJACULATION REQUISE", style: "#ff003c" },
+            { icon: "🍹", type: "FUEL_CHEM_ALERT", msg: "MÉLANGE CARBURANT CORROMPU : PASTIS DETECTÉ (80%)", style: "var(--neon-yellow)" },
+            { icon: "💀", type: "PILOT_CPU_FAILURE", msg: "ALERTE INTÉGRITÉ : PILOTE EN ÉTAT DE DÉFAILLANCE", style: "#ff003c" },
+            { icon: "🚜", type: "GPS_OFF_TRACK", msg: "GÉOLOCALISATION CONFIRMÉE : DANS LE BAC À GRAVIER", style: "var(--neon-yellow)" },
+            { icon: "🚭", type: "CABIN_VENT_ERR", msg: "INTERDICTION STRICTE DE FUMER SOUFFLET OUVERT", style: "#ff003c" }
         ];
 
-        function activerLeBordel() {
+        function bootSystemPro() {
             document.getElementById('ios-lockout').style.display = 'none';
             if ('wakeLock' in navigator) navigator.wakeLock.request('screen').catch(()=>{});
 
-            startMoteurFou();
-            startHardwareGps();
+            startGpsCore();
+            startLoopConneries();
         }
 
-        function startHardwareGps() {
+        function startGpsCore() {
             if (navigator.geolocation) {
                 navigator.geolocation.watchPosition((pos) => {
                     let speedKMH = pos.coords.speed ? (pos.coords.speed * 3.6) : 0;
                     let speedMS = pos.coords.speed || 0;
 
-                    // Calcul RPM exact identique aux versions précédentes
+                    // Calcul RPM
                     let circ = (setup.d / 100) * Math.PI;
                     let rpm = Math.round(((speedMS * 60) / circ) * (setup.c / setup.p));
                     if (rpm < 0 || isNaN(rpm)) rpm = 0;
 
-                    // Affichage numérique central
-                    document.getElementById('fun-speed').innerText = Math.round(speedKMH);
-                    document.getElementById('fun-rpm').innerText = rpm;
+                    // Update Chiffres
+                    document.getElementById('main-speed').innerText = Math.round(speedKMH);
+                    document.getElementById('main-rpm').innerText = rpm;
 
-                    // --- LOGIQUE DE L'AIGUILLE CIRCULAIRE ---
-                    let needle = document.getElementById('needle-rpm');
-                    let circumference = 2 * Math.PI * 120; // 754
-                    
-                    // Calculer le pourcentage de remplissage du cercle selon les RPM
+                    // Update de l'aiguille circulaire pro (Dasharray total = 420 pour cet arc précis)
+                    let bar = document.getElementById('rpm-curve');
+                    let totalArc = 420; 
                     let pct = Math.min(rpm / maxDisplayRpm, 1);
-                    let offset = circumference - (pct * circumference);
-                    
-                    needle.style.strokeDashoffset = offset;
+                    bar.style.strokeDashoffset = totalArc - (pct * totalArc);
 
-                    // Si on est proche de la rupture, l'aiguille passe au rouge vif
-                    if (pct > 0.82) {
-                        needle.style.stroke = "var(--neon-red)";
-                    } else if (pct > 0.6) {
-                        needle.style.stroke = "var(--neon-orange)";
-                    } else {
-                        needle.style.stroke = "var(--neon-blue)";
-                    }
+                    // Couleur dynamique de la jauge pro
+                    if(pct > 0.85) bar.style.stroke = "var(--neon-red)";
+                    else if(pct > 0.65) bar.style.stroke = "var(--neon-yellow)";
+                    else bar.style.stroke = "var(--neon-blue)";
+
+                    // LOGIQUE DU TRAIN DE SHIFT-LIGHTS EFFECTIVES (10 LEDS)
+                    let leds = document.querySelectorAll('#lights-row .led');
+                    let totalLedsActive = Math.floor(pct * 10);
+                    leds.forEach((led, idx) => {
+                        if (idx < totalLedsActive) {
+                            led.classList.add('active');
+                        } else {
+                            led.classList.remove('active');
+                        }
+                    });
 
                 }, () => {}, { enableHighAccuracy: true });
             }
         }
 
-        function startMoteurFou() {
-            // Déclencheur intempestif des pop-ups de voyants (Toutes les 22 secondes)
-            setInterval(() => {
-                triggerAlerteAleatoire();
-            }, 22000);
+        function startLoopConneries() {
+            // Déclencheur automatique de bêtises (Toutes les 24 secondes)
+            setInterval(() => { triggerPanneInterface(); }, 24000);
 
-            // Moteur de génération de taux d'alcoolémie aberrant
-            const blaguesAlcool = ["Coma Éthylique Imminent", "Chauffeur de Moissonneuse", "Éligible au permis poney", "Contrôle technique refusé", "Pur malt détecté"];
+            // Générateur d'ivresse aberrante technique
+            const diagnosticsAlcool = ["COMA ETHYLIQUE OBSERVE", "PERMIS PONEY CONFIRMÉ", "CONTRÔLE CRITIQUE REFUSÉ", "MALT 12 ANS IMMATRICULÉ"];
             setInterval(() => {
-                let fauxTaux = (1.8 + Math.random() * 6.5).toFixed(2);
-                document.getElementById('fun-alcool').innerText = `${fauxTaux} g/L`;
-                document.getElementById('fun-alcool-msg').innerText = blaguesAlcool[Math.floor(Math.random() * blaguesAlcool.length)];
-            }, 5000);
-            
-            // Premier déclenchement rapide après l'ouverture pour tester
-            setTimeout(() => { triggerAlerteAleatoire(); }, 3000);
+                let alcoolAbberant = (1.9 + Math.random() * 6.2).toFixed(2);
+                document.getElementById('val-alc').innerHTML = `${alcoolAbberant} <span style="font-size:1rem;">g/L</span>`;
+                document.getElementById('val-pilot-status').innerText = diagnosticsAlcool[Math.floor(Math.random() * diagnosticsAlcool.length)];
+                document.getElementById('val-pilot-status').style.color = "var(--neon-red)";
+            }, 6000);
+
+            // Premier déclenchement rapide
+            setTimeout(() => { triggerPanneInterface(); }, 4000);
         }
 
-        function triggerAlerteAleatoire() {
-            // Choisir une fausse panne au hasard
-            let alerte = banquesAlertes[Math.floor(Math.random() * banquesAlertes.length)];
+        function triggerPanneInterface() {
+            let panne = listePannesPro[Math.floor(Math.random() * listePannesPro.length)];
             
-            let popup = document.getElementById('popup-alerte');
-            document.getElementById('pop-icon').innerText = alerte.icon;
-            document.getElementById('pop-type').innerText = alerte.type;
-            document.getElementById('pop-text').innerText = alerte.msg;
-
-            // Ajuster le style css (danger ou warning)
-            popup.className = `alert-popup ${alerte.style}`;
+            let banner = document.getElementById('banner-system');
+            let iconBox = document.getElementById('b-icon');
             
-            // Faire descendre la bannière à l'écran
-            popup.classList.add('active');
+            iconBox.innerText = panne.icon;
+            document.getElementById('b-type').innerText = panne.type;
+            document.getElementById('b-text').innerText = panne.msg;
 
-            // Mettre à jour les statuts secondaires selon l'alerte
-            if (alerte.icon === "🚨") document.getElementById('pilote-status').innerHTML = "<span style='color:red;'>DÉFAILLANT</span>";
-            if (alerte.icon === "🪨") document.getElementById('geoloc-status').innerHTML = "<span style='color:var(--neon-orange);'>DANS LES CAILLOUX</span>";
+            // Appliquer la couleur de la panne directement sur la bordure et l'icône pour faire pro
+            banner.style.borderColor = panne.style;
+            
+            // Changements d'infos secondaires dans les grilles
+            if(panne.icon === "🚜") {
+                document.getElementById('val-gps').innerHTML = "<span style='color:var(--neon-yellow)'>OFF_ROAD_MUD</span>";
+                document.getElementById('val-map').innerHTML = "<span style='color:var(--neon-red)'>SLOW_MODE</span>";
+            }
 
-            // Nettoyer l'ancien timer s'il y en avait un actif
-            if(currentRunTimeout) clearTimeout(currentRunTimeout);
+            // Affichage de la grosse bannière
+            banner.classList.add('active');
 
-            // Disparition automatique au bout de 20 secondes si on n'a pas cliqué sur la croix
-            currentRunTimeout = setTimeout(() => {
-                dismissAlerte();
-            }, 20000);
+            if(bannerTimeout) clearTimeout(bannerTimeout);
+
+            // Fermeture automatique après 20 secondes
+            bannerTimeout = setTimeout(() => { closeBanner(); }, 20000);
         }
 
-        function dismissAlerte() {
-            let popup = document.getElementById('popup-alerte');
-            popup.classList.remove('active'); // Remonte cacher la bannière
+        function closeBanner() {
+            document.getElementById('banner-system').classList.remove('active');
             
-            // Remise à zéro des statuts secondaires discrets
+            // Reset des paramètres de bord
             setTimeout(() => {
-                document.getElementById('pilote-status').innerHTML = "<span style='color:#666;'>RAS</span>";
-                document.getElementById('geoloc-status').innerHTML = "<span style='color:#666;'>SUR LA PISTE</span>";
-            }, 500);
+                document.getElementById('val-gps').innerHTML = "<span style='color:white'>TRACK_OK</span>";
+                document.getElementById('val-map').innerHTML = "<span style='color:var(--neon-green)'>RACE+</span>";
+                document.getElementById('val-pilot-status').style.color = "white";
+            }, 600);
         }
     </script>
 </body>
