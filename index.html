@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>SIMBERTOUT - RACING PARODY TEAM</title>
+    <style>
+        :root {
+            --bg-dark: #030305;
+            --panel-bg: rgba(20, 10, 10, 0.85);
+            --border-glow: rgba(255, 0, 0, 0.15);
+            --neon-red: #ff003c;
+            --neon-green: #39ff14;
+            --neon-yellow: #ffff00;
+            --neon-blue: #00f0ff;
+            --text-main: #ffffff;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-user-select: none; }
+        
+        body { 
+            background: radial-gradient(circle at center, #1a0505 0%, var(--bg-dark) 100%); 
+            color: var(--text-main); 
+            font-family: 'Impact', 'Arial Black', sans-serif; 
+            overflow: hidden; 
+            width: 100vw; 
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* CITATION D'OUVERTURE / LOCKOUT */
+        #ios-lockout {
+            position: fixed; top:0; left:0; width:100vw; height:100vh;
+            background: #000; z-index: 99999; display: flex; flex-direction: column;
+            justify-content: center; align-items: center; padding: 30px; text-align: center;
+        }
+        .citation {
+            font-family: 'Georgia', serif;
+            font-style: italic;
+            font-size: 1.6rem;
+            color: #e0e0e0;
+            max-width: 80%;
+            line-height: 1.4;
+            margin-bottom: 10px;
+        }
+        .auteur {
+            font-family: 'Arial', sans-serif;
+            font-size: 1rem;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 40px;
+        }
+        #ios-lockout button {
+            background: var(--neon-red); color: white; font-weight: 900; padding: 15px 40px;
+            border: 2px solid white; border-radius: 30px; font-size: 1.2rem; cursor: pointer;
+            box-shadow: 0 0 20px var(--neon-red);
+        }
+
+        /* GRILLE PRINCIPALE MODE FUN */
+        .dashboard {
+            display: grid;
+            grid-template-columns: 1.2fr 1.5fr 1.2fr;
+            grid-template-rows: 1fr 1fr;
+            gap: 8px;
+            padding: 8px;
+            flex-grow: 1;
+            height: calc(100vh - 32px);
+        }
+
+        .block {
+            background: var(--panel-bg);
+            border: 2px solid var(--border-glow);
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            box-shadow: inset 0 0 15px rgba(0,0,0,0.6);
+        }
+        .label {
+            font-size: 0.75rem;
+            color: #888;
+            text-transform: uppercase;
+            position: absolute;
+            top: 5px; left: 8px;
+            letter-spacing: 1px;
+        }
+
+        /* COMPTEURS */
+        .val { font-size: 3.5rem; font-weight: 900; font-family: monospace; text-shadow: 0 0 10px rgba(255,255,255,0.2); }
+        .unit { font-size: 1rem; color: #555; margin-left: 2px; }
+
+        /* VOYANTS ALÉATOIRES */
+        .voyant-grid {
+            grid-row: span 2;
+            display: grid;
+            grid-template-rows: repeat(4, 1fr);
+            gap: 5px;
+            width: 100%;
+            height: 100%;
+        }
+        .voyant {
+            background: #110505;
+            border: 2px solid #221111;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.65rem;
+            text-align: center;
+            font-weight: bold;
+            color: #331111;
+            text-transform: uppercase;
+            padding: 4px;
+            transition: all 0.1s ease;
+        }
+        /* ÉTATS DES VOYANTS QUAND ILS S'ALLUMENT */
+        .voyant.danger.active { background: #ff0000; color: #fff; border-color: #ff5555; box-shadow: 0 0 15px #ff0000; text-shadow: 0 0 5px #000; }
+        .voyant.warning.active { background: #ffaa00; color: #000; border-color: #ffff55; box-shadow: 0 0 15px #ffaa00; }
+        .voyant.info.active { background: #00aaff; color: #fff; border-color: #55ffff; box-shadow: 0 0 15px #00aaff; }
+
+        /* VOYANT INTERDIT DE FUMER ET ALCOOL */
+        .no-smoking { font-size: 2.2rem; opacity: 0.15; transition: opacity 0.3s; }
+        .no-smoking.active { opacity: 1; filter: drop-shadow(0 0 8px red); animation: flash 0.6s infinite alternate; }
+        
+        @keyframes flash { from { opacity: 0.3; } to { opacity: 1; } }
+
+        /* CONFIG BAR REPRISE DE LA PAGE PRO POUR LES RPM */
+        .config-bar {
+            background: #000; height: 32px; display: flex; justify-content: space-around;
+            align-items: center; font-size: 0.65rem; color: #444; border-top: 1px solid #111;
+        }
+        .config-bar input { background: #111; border: 1px solid #222; color: #666; width: 35px; text-align: center; font-size: 0.65rem; }
+
+        #portrait-warning { display: none; position: fixed; top:0; left:0; width:100vw; height:100vh; background: #000; z-index: 999999; justify-content: center; align-items: center; }
+        @media (orientation: portrait) { #portrait-warning { display: flex; } }
+    </style>
+</head>
+<body>
+
+    <div id="portrait-warning"><h3>🔄 TOURNE LE TÉLÉPHONE, PILOTE !</h3></div>
+
+    <!-- CITATION DE FILIOL AU LANCEMENT -->
+    <div id="ios-lockout">
+        <div class="citation">"Le problème de notre drapeau, c'est que le blanc est au milieu."</div>
+        <div class="auteur">L.F.illiol</div>
+        <button onclick="activerLeBordel()">ENVOYER LA SAUCE</button>
+    </div>
+
+    <!-- TABLEAU DE BORD FUN -->
+    <div class="dashboard">
+        
+        <!-- COLONNE GAUCHE : LES ALARMES DE CONNERIES -->
+        <div class="voyant-grid">
+            <div class="voyant danger" id="v-courroie">Maintenance<br>Courroie d'éjaculation</div>
+            <div class="voyant warning" id="v-carbu">Mélange Carbu :<br>Pastis / Huile de friture</div>
+            <div class="voyant danger" id="v-pilote">Alerte<br>Pilote Défaillant</div>
+            <div class="voyant info" id="v-gravier">Géolocalisation :<br>Dans le bac à gravier</div>
+        </div>
+
+        <!-- COLONNE CENTRALE : VITESSE ET RPM EN GROS -->
+        <div style="display: grid; grid-template-rows: 1.2fr 0.8fr; gap: 8px;">
+            <div class="block" style="border-color: var(--neon-green);">
+                <div class="label" style="color: var(--neon-green);">Vitesse Spatiale</div>
+                <div class="val" id="fun-speed" style="color: var(--neon-green); font-size: 5rem;">0<span class="unit">km/h</span></div>
+            </div>
+            <div class="block" style="border-color: var(--neon-blue);">
+                <div class="label" style="color: var(--neon-blue);">Rupture Moteur</div>
+                <div class="val" id="fun-rpm" style="color: var(--neon-blue); font-size: 3rem;">0<span class="unit">rpm</span></div>
+            </div>
+        </div>
+
+        <!-- COLONNE DROITE : ALCOOLÉMIE ET INTERDIT DE FUMER -->
+        <div style="display: grid; grid-template-rows: 1fr 1fr; gap: 8px;">
+            <!-- BLOC IVRESSE COMPLÈTE -->
+            <div class="block" style="border-color: var(--neon-yellow); background: rgba(30,25,10,0.5);">
+                <div class="label" style="color: var(--neon-yellow);">Alcoomètre Intempestif</div>
+                <div class="val" id="fun-alcool" style="color: var(--neon-yellow); font-size: 2.2rem;">0.00<span class="unit" style="color:var(--neon-yellow)">g/L</span></div>
+                <div id="fun-alcool-msg" style="font-size: 0.6rem; color: #ff5500; margin-top: 2px; text-transform: uppercase;">Analyse en cours...</div>
+            </div>
+            <!-- BLOC INTERDIT DE FUMER -->
+            <div class="block">
+                <div class="label">Sécurité Cabine</div>
+                <div class="no-smoking" id="v-smoke">🚬🚭</div>
+                <div style="font-size: 0.6rem; color: #666; margin-top: 5px;" id="smoke-text">NE PAS FUMER SOUFFLET OUVERT</div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- CONFIGURATION MÉCANIQUE DOUBLE-FOND (Pour préserver le calcul des RPM exacts) -->
+    <div class="config-bar">
+        <div>Masse: <input type="number" id="cfg-w" value="165" onchange="u()"> kg</div>
+        <div>Pignon: <input type="number" id="cfg-p" value="11" onchange="u()"> d</div>
+        <div>Couronne: <input type="number" id="cfg-c" value="80" onchange="u()"> d</div>
+        <div>Pneu Ø: <input type="number" id="cfg-d" value="27.5" onchange="u()"> cm</div>
+    </div>
+
+    <script>
+        // Récupération des mêmes variables de configuration que la page pro
+        let setup = {
+            w: parseFloat(localStorage.getItem('k_weight')) || 165,
+            p: parseInt(localStorage.getItem('k_pignon')) || 11,
+            c: parseInt(localStorage.getItem('k_couronne')) || 80,
+            d: parseFloat(localStorage.getItem('k_pneu')) || 27.5
+        };
+        document.getElementById('cfg-w').value = setup.w; document.getElementById('cfg-p').value = setup.p;
+        document.getElementById('cfg-c').value = setup.c; document.getElementById('cfg-d').value = setup.d;
+        function u() {
+            setup.w = parseFloat(document.getElementById('cfg-w').value); setup.p = parseInt(document.getElementById('cfg-p').value);
+            setup.c = parseInt(document.getElementById('cfg-c').value); setup.d = parseFloat(document.getElementById('cfg-d').value);
+        }
+
+        function activerLeBordel() {
+            document.getElementById('ios-lockout').style.display = 'none';
+            
+            // Forcer l'anti-veille si dispo
+            if ('wakeLock' in navigator) navigator.wakeLock.request('screen').catch(()=>{});
+
+            // Lancement du hardware de conneries
+            startMoteurConneries();
+            startGpsFun();
+        }
+
+        function startGpsFun() {
+            if (navigator.geolocation) {
+                navigator.geolocation.watchPosition((pos) => {
+                    let speedKMH = pos.coords.speed ? (pos.coords.speed * 3.6) : 0;
+                    let speedMS = pos.coords.speed || 0;
+
+                    // Calcul du vrai RPM pour l'afficher de façon fun
+                    let circ = (setup.d / 100) * Math.PI;
+                    let rpm = Math.round(((speedMS * 60) / circ) * (setup.c / setup.p));
+                    if (rpm < 0 || isNaN(rpm)) rpm = 0;
+
+                    document.getElementById('fun-speed').innerHTML = `${Math.round(speedKMH)}<span class="unit">km/h</span>`;
+                    document.getElementById('fun-rpm').innerHTML = `${rpm}<span class="unit">rpm</span>`;
+                }, () => {}, { enableHighAccuracy: true });
+            }
+        }
+
+        function startMoteurConneries() {
+            // 1. Gestion des voyants débiles qui clignotent de temps en temps
+            setInterval(() => {
+                // Courroie d'éjaculation (s'allume si RPM élevés ou aléatoire)
+                toggleVoyant('v-courroie', Math.random() > 0.6);
+                
+                // Pastis dans le carbu
+                toggleVoyant('v-carbu', Math.random() > 0.7);
+                
+                // Pilote défaillant
+                toggleVoyant('v-pilote', Math.random() > 0.85);
+                
+                // Dans le gravier
+                toggleVoyant('v-gravier', Math.random() > 0.9);
+                
+                // Voyant clope
+                let vSmoke = document.getElementById('v-smoke');
+                let tSmoke = document.getElementById('smoke-text');
+                if(Math.random() > 0.5) {
+                    vSmoke.classList.add('active');
+                    tSmoke.innerText = "AMENDE DE 135€ EN COURS";
+                    tSmoke.style.color = "var(--neon-red)";
+                } else {
+                    vSmoke.classList.remove('active');
+                    tSmoke.innerText = "NE PAS FUMER SOUFFLET OUVERT";
+                    tSmoke.style.color = "#666";
+                }
+
+            }, 2500);
+
+            // 2. Taux d'alcoolémie complètement délirant et intempestif
+            const insultesAlcool = [
+                "Coma Éthylique Imminent", "Chauffeur de Moissonneuse", 
+                "Verre de trop détecté", "Éligible au permis poney", 
+                "Contrôle technique refusé", "Pur malt 12 ans d'âge"
+            ];
+            
+            setInterval(() => {
+                // Génère une valeur totalement impossible entre 1.50g/L et 8.40g/L
+                let tauxAbberant = (1.5 + Math.random() * 7).toFixed(2);
+                document.getElementById('fun-alcool').innerHTML = `${tauxAbberant}<span class="unit" style="color:var(--neon-yellow)">g/L</span>`;
+                
+                let phraseAleatoire = insultesAlcool[Math.floor(Math.random() * insultesAlcool.length)];
+                document.getElementById('fun-alcool-msg').innerText = phraseAleatoire;
+            }, 4000);
+        }
+
+        function toggleVoyant(id, condition) {
+            let el = document.getElementById(id);
+            if(condition) {
+                el.classList.add('active');
+            } else {
+                el.classList.remove('active');
+            }
+        }
+    </script>
+</body>
+</html>
