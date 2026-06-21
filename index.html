@@ -3,320 +3,265 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>SIMBERTOUT - RACING DISPLAY PRO</title>
+    <title>SIMBERTOUT - CYBER COCKPIT 3000</title>
     <style>
         :root {
-            --bg-pro: #08090c;
-            --panel-pro: #111318;
-            --panel-border: #1f232d;
-            --neon-red: #ff003c;
-            --neon-green: #00ff66;
-            --neon-blue: #00d2ff;
-            --neon-yellow: #ffcc00;
-            --text-gray: #7a8293;
+            --neon-cyan: #00f3ff;
+            --neon-magenta: #ff00a0;
+            --neon-purple: #9d00ff;
+            --neon-green: #39ff14;
+            --glass-bg: rgba(10, 15, 30, 0.45);
+            --glass-border: rgba(0, 243, 255, 0.2);
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-user-select: none; }
         
         body { 
-            background: var(--bg-pro); 
+            background: #020208;
             color: #ffffff; 
-            font-family: 'Arial', sans-serif; 
+            font-family: 'Segoe UI', Roboto, Helvetica, sans-serif;
             overflow: hidden; 
             width: 100vw; 
             height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            padding: 10px 15px;
-        }
-
-        /* CITATION INITIALE */
-        #ios-lockout {
-            position: fixed; top:0; left:0; width:100vw; height:100vh;
-            background: #000; z-index: 99999; display: flex; flex-direction: column;
-            justify-content: center; align-items: center; padding: 30px; text-align: center;
-        }
-        .citation { font-family: 'Georgia', serif; font-style: italic; font-size: 1.6rem; color: #e0e0e0; max-width: 80%; line-height: 1.4; margin-bottom: 10px; }
-        .auteur { font-size: 0.9rem; color: #666; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 40px; }
-        #ios-lockout button {
-            background: transparent; color: white; font-weight: bold; padding: 12px 35px;
-            border: 1px solid white; border-radius: 4px; font-size: 1rem; cursor: pointer; text-transform: uppercase;
-        }
-
-        /* -------------------------------------------
-           BARRE DE LEDS SÉQUENTIELLE (SHIFT LIGHTS) 
-        ------------------------------------------- */
-        .shift-lights {
-            display: grid;
-            grid-template-columns: repeat(10, 1fr);
-            gap: 6px;
-            width: 100%;
-            height: 14px;
-            margin-bottom: 5px;
-        }
-        .led {
-            background: #1a1d24;
-            border-radius: 3px;
-            transition: background 0.05s ease;
-        }
-        /* Couleurs des leds de course */
-        .led.green.active { background: var(--neon-green); box-shadow: 0 0 10px var(--neon-green); }
-        .led.yellow.active { background: var(--neon-yellow); box-shadow: 0 0 10px var(--neon-yellow); }
-        .led.red.active { background: var(--neon-red); box-shadow: 0 0 10px var(--neon-red); }
-
-        /* -------------------------------------------
-           GRILLE DE TÉLÉMÉTRIE STYLE MOTEC / AIM
-        ------------------------------------------- */
-        .telemetry-grid {
-            display: grid;
-            grid-template-columns: 1fr 2fr 1fr;
-            gap: 10px;
-            flex-grow: 1;
-            align-items: center;
-        }
-
-        .data-box {
-            background: var(--panel-pro);
-            border: 1px solid var(--panel-border);
-            border-radius: 4px;
-            padding: 10px;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            position: relative;
-        }
-        .data-label {
-            font-size: 0.7rem;
-            color: var(--text-gray);
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        .data-value {
-            font-size: 2.2rem;
-            font-weight: 700;
-            font-family: 'Courier New', monospace;
-            color: #ffffff;
-            text-align: right;
-        }
-
-        /* BLOC CENTRAL COMPTEUR */
-        .center-cluster {
-            display: grid;
-            grid-template-rows: 1.8fr 0.7fr;
-            gap: 10px;
-            height: 100%;
-            position: relative;
-        }
-        
-        .speed-box {
-            background: var(--panel-pro);
-            border: 1px solid var(--panel-border);
-            border-radius: 4px;
             display: flex;
             justify-content: center;
             align-items: center;
             position: relative;
         }
-        .speed-box .data-label { position: absolute; top: 10px; left: 12px; }
-        
-        .big-speed {
-            font-size: 7.5rem;
-            font-weight: 900;
-            font-family: 'Arial Black', sans-serif;
-            line-height: 1;
-            letter-spacing: -3px;
-        }
-        .big-speed-unit {
-            font-size: 1.2rem;
-            color: var(--text-gray);
-            font-weight: 700;
-            margin-left: 5px;
-            align-self: flex-end;
-            margin-bottom: 15px;
-        }
-
-        /* Arc de cercle RPM ultra-pro entourant la vitesse */
-        .rpm-ring-svg {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            top: 0; left: 0;
-            pointer-events: none;
-        }
-        .rpm-track { fill: none; stroke: rgba(255,255,255,0.02); stroke-width: 4; }
-        .rpm-bar { 
-            fill: none; stroke: var(--neon-blue); stroke-width: 4; 
-            stroke-dasharray: 660; stroke-dashoffset: 660;
-            transition: stroke-dashoffset 0.08s ease-out, stroke 0.2s;
-        }
-
-        .rpm-footer-box {
-            background: #151821;
-            border: 1px solid var(--panel-border);
-            border-radius: 4px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 15px;
-        }
-        .big-rpm { font-family: monospace; font-size: 2rem; font-weight: 700; color: var(--neon-blue); }
 
         /* -------------------------------------------
-           BANNIÈRE DE NOTIFICATION PLUS GROSSE
+           FONDS DE NUAGES ET NÉBULEUSES FUTURISTES (ANIMÉS)
         ------------------------------------------- */
-        .alert-banner {
+        .space-bg {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at 30% 40%, #150030 0%, #020208 70%);
+            z-index: 1; overflow: hidden;
+        }
+        .cloud-1, .cloud-2 {
+            position: absolute; border-radius: 50%; background: var(--neon-purple);
+            filter: blur(120px); opacity: 0.25; animation: drift 30s infinite alternate ease-in-out;
+        }
+        .cloud-1 { width: 500px; height: 500px; top: -10px; left: -100px; }
+        .cloud-2 { width: 600px; height: 600px; bottom: -100px; right: -100px; background: #0033ff; filter: blur(150px); animation-duration: 45s; }
+        
+        @keyframes drift {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(80px, 50px) scale(1.2); }
+        }
+
+        /* CITATION INITIALE */
+        #ios-lockout {
+            position: fixed; top:0; left:0; width:100vw; height:100vh;
+            background: #05050d; z-index: 99999; display: flex; flex-direction: column;
+            justify-content: center; align-items: center; padding: 30px; text-align: center;
+        }
+        .citation { font-family: 'Georgia', serif; font-style: italic; font-size: 1.8rem; color: #00f3ff; text-shadow: 0 0 15px rgba(0,243,255,0.4); max-width: 80%; line-height: 1.4; margin-bottom: 15px; }
+        .auteur { font-size: 0.9rem; color: #555; text-transform: uppercase; letter-spacing: 3px; margin-bottom: 50px; }
+        #ios-lockout button {
+            background: linear-gradient(45deg, var(--neon-purple), var(--neon-cyan)); color: white; font-weight: bold; padding: 15px 40px;
+            border: none; border-radius: 30px; font-size: 1rem; cursor: pointer; text-transform: uppercase; letter-spacing: 2px; box-shadow: 0 0 20px rgba(157,0,255,0.5);
+        }
+
+        /* -------------------------------------------
+           INTERFACE EN VERRE DÉPOLI (BLUR EFFECT)
+        ------------------------------------------- */
+        .hologram-hud {
+            position: relative; z-index: 10;
+            width: 95vw; height: 90vh;
+            display: grid; grid-template-columns: 1fr 1.8fr 1fr; gap: 20px;
+            padding: 20px;
+        }
+
+        .glass-panel {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            backdrop-filter: blur(20px); /* L'effet de flou arrière-plan futuriste */
+            -webkit-backdrop-filter: blur(20px);
+            padding: 20px;
+            display: flex; flex-direction: column; justify-content: space-between;
+            transition: all 0.5s ease;
+        }
+        .panel-title { font-size: 0.7rem; font-weight: 900; color: var(--neon-cyan); letter-spacing: 2px; text-transform: uppercase; opacity: 0.8; }
+        .panel-data { font-size: 2.5rem; font-weight: 300; font-family: monospace; text-align: right; text-shadow: 0 0 10px rgba(255,255,255,0.3); }
+
+        /* CAPSULE CENTRALE COMPTEUR VITESSE */
+        .core-capsule {
+            display: flex; flex-direction: column; justify-content: center; align-items: center; position: relative;
+        }
+        .speed-display {
+            text-align: center; position: relative; z-index: 5;
+        }
+        .cyber-speed {
+            font-size: 8.5rem; font-weight: 200; font-family: monospace; line-height: 1;
+            background: linear-gradient(to bottom, #fff 60%, var(--neon-cyan));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 15px rgba(0, 243, 255, 0.3));
+        }
+        .cyber-unit { font-size: 1rem; color: var(--neon-cyan); letter-spacing: 4px; font-weight: 800; }
+        
+        .cyber-rpm { font-size: 1.8rem; font-weight: 400; color: var(--neon-magenta); font-family: monospace; margin-top: 15px; }
+
+        /* Aiguille orbitale futuriste */
+        .svg-orbit { position: absolute; width: 340px; height: 340px; z-index: 2; pointer-events: none; }
+        .orbit-track { fill: none; stroke: rgba(255, 255, 255, 0.03); stroke-width: 2; }
+        .orbit-glow {
+            fill: none; stroke: url(#cyan-purple-grad); stroke-width: 4; stroke-linecap: round;
+            stroke-dasharray: 880; stroke-dashoffset: 880;
+            transition: stroke-dashoffset 0.1s ease-out;
+            filter: drop-shadow(0 0 8px var(--neon-cyan));
+        }
+
+        /* -------------------------------------------
+           GROSSE ALERTE PIRATE / HOLOGRAPHIQUE
+        ------------------------------------------- */
+        .cyber-popup {
             position: fixed;
-            top: -140px; /* Caché plus haut */
-            left: 50%;
-            transform: translateX(-50%);
-            width: 92vw;
-            max-width: 750px;
-            background: #0d0103;
-            border: 3px solid var(--neon-red);
-            border-radius: 6px;
-            padding: 16px 24px;
-            display: flex;
-            align-items: center;
-            gap: 25px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8), inset 0 0 20px rgba(255, 0, 60, 0.2);
-            transition: top 0.4s cubic-bezier(0.075, 0.82, 0.165, 1);
+            top: -180px; /* Caché en haut */
+            left: 50%; transform: translateX(-50%);
+            width: 90vw; max-width: 800px;
+            background: rgba(15, 2, 8, 0.75);
+            border: 2px solid var(--neon-magenta);
+            border-radius: 20px;
+            padding: 22px 30px;
+            display: flex; align-items: center; gap: 30px;
+            box-shadow: 0 0 40px rgba(255, 0, 160, 0.4);
+            backdrop-filter: blur(35px); /* Super flou derrière le message */
+            -webkit-backdrop-filter: blur(35px);
+            transition: top 0.5s cubic-bezier(0.19, 1, 0.22, 1);
             z-index: 99999;
         }
-        .alert-banner.active { top: 25px; } /* Descente */
+        .cyber-popup.active { top: 30px; } /* Descente */
 
-        /* Très gros logo de voyant de sport */
-        .alert-big-icon {
-            font-size: 3.5rem; /* Augmenté */
-            animation: pulse-glow 0.5s infinite alternate;
+        /* Très gros logo du voyant fun */
+        .cyber-giant-icon {
+            font-size: 4.5rem; /* Énorme comme demandé */
+            filter: drop-shadow(0 0 15px var(--neon-magenta));
+            animation: glitch-pulse 0.4s infinite alternate;
         }
         
-        .alert-body { flex-grow: 1; }
-        .alert-header { font-size: 0.8rem; font-weight: 800; color: var(--neon-red); letter-spacing: 2px; text-transform: uppercase; }
-        .alert-text { font-size: 1.3rem; font-weight: 700; color: #ffffff; margin-top: 4px; letter-spacing: -0.5px; } /* Augmenté */
+        .cyber-pop-body { flex-grow: 1; }
+        .cyber-pop-header { font-size: 0.75rem; font-weight: 900; color: var(--neon-magenta); letter-spacing: 3px; }
+        .cyber-pop-text { font-size: 1.5rem; font-weight: 600; color: #ffffff; margin-top: 4px; letter-spacing: -0.5px; }
         
-        .alert-close-btn { font-size: 1.8rem; color: #4e525e; cursor: pointer; padding: 5px; }
-        .alert-close-btn:active { color: #fff; }
+        .cyber-close { font-size: 2rem; color: rgba(255,255,255,0.3); cursor: pointer; padding: 5px; font-weight: 200; transition: color 0.2s; }
+        .cyber-close:hover { color: var(--neon-magenta); }
 
-        @keyframes pulse-glow { from { opacity: 0.4; transform: scale(0.95); } to { opacity: 1; transform: scale(1.05); } }
+        @keyframes glitch-pulse { from { transform: scale(0.96) rotate(-2deg); opacity: 0.8; } to { transform: scale(1.04) rotate(2deg); opacity: 1; } }
 
-        /* CONFIG DISCRÈTE BAS DE PAGE */
-        .bottom-bar { font-size: 0.65rem; color: #2d3139; text-align: center; padding-top: 5px; }
-
-        #portrait-warning { display: none; position: fixed; top:0; left:0; width:100vw; height:100vh; background: #000; z-index: 999999; justify-content: center; align-items: center; }
+        #portrait-warning { display: none; position: fixed; top:0; left:0; width:100vw; height:100vh; background: #020208; z-index: 999999; justify-content: center; align-items: center; }
         @media (orientation: portrait) { #portrait-warning { display: flex; } }
     </style>
 </head>
 <body>
 
-    <div id="portrait-warning"><h3>🔄 ROTATION RETINA PROTOCOL REQUIRED</h3></div>
+    <div id="portrait-warning"><h3>🛸 RE-ALIGN INTERFACES TO HORIZONTAL</h3></div>
 
-    <!-- CITATION OBLIGATOIRE -->
+    <!-- CITATION REQUISITION DE DEPART -->
     <div id="ios-lockout">
         <div class="citation">"Le problème de notre drapeau, c'est que le blanc est au milieu."</div>
         <div class="auteur">L.F.illiol</div>
-        <button onclick="bootSystemPro()">IGNITION / START</button>
+        <button onclick="bootQuantumHud()">INITIALISER LE COCKPIT</button>
     </div>
 
-    <!-- LARGE BANNIÈRE DE TÉLÉMÉTRIE FAUTIVE -->
-    <div class="alert-banner" id="banner-system">
-        <div class="alert-big-icon" id="b-icon">⚙️</div>
-        <div class="alert-body">
-            <div class="alert-header" id="b-type">SYS_ERR_CRITICAL</div>
-            <div class="alert-text" id="b-text">MAINTENANCE COURROIE D'ÉJACULATION REQUISE</div>
+    <!-- EFFET NUAGES D'ARRIÈRE PLAN -->
+    <div class="space-bg">
+        <div class="cloud-1"></div>
+        <div class="cloud-2"></div>
+    </div>
+
+    <!-- GROS MESSAGE ALERTE S'AFFICHANT SUR DU FLOU -->
+    <div class="cyber-popup" id="cyber-alert">
+        <div class="cyber-giant-icon" id="alt-icon">⚙️</div>
+        <div class="cyber-pop-body">
+            <div class="cyber-pop-header" id="alt-type">CORE_SYSTEM_FAILURE</div>
+            <div class="cyber-pop-text" id="alt-text">MAINTENANCE COURROIE D'ÉJACULATION STRATOSPHÉRIQUE</div>
         </div>
-        <div class="alert-close-btn" onclick="closeBanner()">✕</div>
+        <div class="cyber-close" onclick="dismissCyberAlert()">✕</div>
     </div>
 
-    <!-- BARRE DE LEDS SÉQUENTIELLE AUTOMATIQUE -->
-    <div class="shift-lights" id="lights-row">
-        <div class="led green"></div><div class="led green"></div><div class="led green"></div><div class="led green"></div>
-        <div class="led yellow"></div><div class="led yellow"></div><div class="led yellow"></div>
-        <div class="led red"></div><div class="led red"></div><div class="led red"></div>
-    </div>
-
-    <!-- GRILLE PROFESSIONNELLE -->
-    <div class="telemetry-grid">
+    <!-- HUD INTERACTIVE TRANSPARENTE FLUE -->
+    <div class="hologram-hud">
         
-        <!-- BLOC GAUCHE : STATUTS MOTEUR -->
-        <div style="display: grid; grid-template-rows: 1fr 1fr; gap: 10px; height: 100%;">
-            <div class="data-box">
-                <div class="data-label">CHASSIS MAP</div>
-                <div class="data-value" id="val-map" style="color: var(--neon-green);">RACE+</div>
+        <!-- PANNEAU GAUCHE -->
+        <div class="glass-panel">
+            <div>
+                <div class="panel-title">SYSTEM STATUS</div>
+                <div class="panel-data" id="sys-map" style="color: var(--neon-green); font-size: 1.8rem; margin-top: 10px;">HYPERDRIVE</div>
             </div>
-            <div class="data-box">
-                <div class="data-label">TRAJECTORY / GPS</div>
-                <div class="data-value" id="val-gps" style="font-size: 1.4rem; padding-top:10px;">TRACK_OK</div>
-            </div>
-        </div>
-
-        <!-- BLOC CENTRAL : DASHBOARD PORSCHE / MOTEC -->
-        <div class="center-cluster">
-            <div class="speed-box">
-                <div class="data-label">VEHICLE SPEED</div>
-                
-                <!-- Arc de cercle RPM pro autour de la vitesse -->
-                <svg class="rpm-ring-svg" viewBox="0 0 200 200">
-                    <path class="rpm-track" d="M 30,165 A 80,80 0 1,1 170,165" />
-                    <path class="rpm-bar" id="rpm-curve" d="M 30,165 A 80,80 0 1,1 170,165" />
-                </svg>
-
-                <div class="big-speed" id="main-speed">0</div>
-                <div class="big-speed-unit">KM/H</div>
-            </div>
-            <div class="rpm-footer-box">
-                <div class="data-label" style="margin: 0;">ENGINE SPEED</div>
-                <div class="big-rpm"><span id="main-rpm">0</span> <span style="font-size:0.8rem; color:var(--text-gray);">RPM</span></div>
+            <div>
+                <div class="panel-title">QUANTUM TRAJECTORY</div>
+                <div class="panel-data" id="sys-geo" style="font-size: 1.2rem; color: #fff; margin-top: 10px;">STABLE_ORBIT</div>
             </div>
         </div>
 
-        <!-- BLOC DROIT : ETHANOL & LOGS BIOMÉTRIQUES -->
-        <div style="display: grid; grid-template-rows: 1fr 1fr; gap: 10px; height: 100%;">
-            <div class="data-box">
-                <div class="data-label">ALCOHOLO-PROBE v4</div>
-                <div class="data-value" id="val-alc" style="color: var(--neon-yellow);">0.00 <span style="font-size:1rem;">g/L</span></div>
+        <!-- GROS COMPTEUR CENTRAL CYBERNETIQUE -->
+        <div class="glass-panel core-capsule">
+            
+            <!-- Cercle SVG Aiguille Orbitale -->
+            <svg class="svg-orbit" viewBox="0 0 300 300">
+                <defs>
+                    <linearGradient id="cyan-purple-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="var(--neon-cyan)" />
+                        <stop offset="100%" stop-color="var(--neon-purple)" />
+                    </linearGradient>
+                </defs>
+                <circle class="orbit-track" cx="150" cy="150" r="135"></circle>
+                <circle class="orbit-glow" id="orbit-needle" cx="150" cy="150" r="135"></circle>
+            </svg>
+
+            <div class="speed-display">
+                <div class="cyber-speed" id="hud-speed">0</div>
+                <div class="cyber-unit">WARP SPEED</div>
             </div>
-            <div class="data-box">
-                <div class="data-label">PILOTE CRITICAL INDEX</div>
-                <div class="data-value" id="val-pilot-status" style="font-size: 1.2rem; color: #fff; padding-top:12px;">CLEAR</div>
+            
+            <div class="cyber-rpm"><span id="hud-rpm">0</span> <span style="font-size: 0.7rem; color: rgba(255,255,255,0.4);">R/MIN</span></div>
+        </div>
+
+        <!-- PANNEAU DROIT -->
+        <div class="glass-panel">
+            <div>
+                <div class="panel-title">BLOOD ETHANOL PROBE</div>
+                <div class="panel-data" id="hud-alc" style="color: var(--neon-cyan);">0.00 <span style="font-size: 1rem;">g/L</span></div>
+            </div>
+            <div>
+                <div class="panel-title">COGNITIVE LOG</div>
+                <div class="panel-data" id="hud-alc-msg" style="font-size: 1.1rem; color: var(--neon-magenta); margin-top: 10px;">ANALYSIS_CLEAR</div>
             </div>
         </div>
 
     </div>
-
-    <div class="bottom-bar">SIMBERTOUT TELEMETRY SYSTEM v2.8 — TRACK PROTOCOL ACTIVE</div>
 
     <script>
-        // Paramètres techniques cachés inchangés pour le calcul exact des RPM
+        // Extraction transparente des données de config kart
         let setup = {
             p: parseInt(localStorage.getItem('k_pignon')) || 11,
             c: parseInt(localStorage.getItem('k_couronne')) || 80,
             d: parseFloat(localStorage.getItem('k_pneu')) || 27.5
         };
 
-        let bannerTimeout = null;
-        const maxDisplayRpm = 14500;
+        let activeTimer = null;
+        const maxRpmLimiter = 14500;
 
-        // Base de données des pannes absurdes
-        const listePannesPro = [
-            { icon: "🔞", type: "SYS_CRITICAL_ERROR", msg: "MAINTENANCE COURROIE D'ÉJACULATION REQUISE", style: "#ff003c" },
-            { icon: "🍹", type: "FUEL_CHEM_ALERT", msg: "MÉLANGE CARBURANT CORROMPU : PASTIS DETECTÉ (80%)", style: "var(--neon-yellow)" },
-            { icon: "💀", type: "PILOT_CPU_FAILURE", msg: "ALERTE INTÉGRITÉ : PILOTE EN ÉTAT DE DÉFAILLANCE", style: "#ff003c" },
-            { icon: "🚜", type: "GPS_OFF_TRACK", msg: "GÉOLOCALISATION CONFIRMÉE : DANS LE BAC À GRAVIER", style: "var(--neon-yellow)" },
-            { icon: "🚭", type: "CABIN_VENT_ERR", msg: "INTERDICTION STRICTE DE FUMER SOUFFLET OUVERT", style: "#ff003c" }
+        // Base de pannes cyberpunk délirantes
+        const pannesCyber = [
+            { icon: "🛸", type: "CRITICAL_BIOLOGICAL_ERR", msg: "MAINTENANCE COURROIE D'ÉJACULATION STRATOSPHÉRIQUE", style: "var(--neon-magenta)" },
+            { icon: "🧪", type: "CHEMICAL_REACTOR_WARN", msg: "CARBURANT ALTÉRÉ : 80% PASTIS INTERGALACTIQUE / 20% FRITURE", style: "var(--neon-cyan)" },
+            { icon: "🧠", type: "PILOT_BRAIN_DESYNC", msg: "SYSTÈME NERVEUX DU PILOTE TOTALEMENT ASSOMMÉ", style: "var(--neon-magenta)" },
+            { icon: "☄️", type: "NAVIGATION_LOST", msg: "VOTRE POSITION : EN ORBITE DANS LE BAC À GRAVIER COSMIQUE", style: "var(--neon-purple)" },
+            { icon: "🚫", type: "ATMOSPHERE_SMOKE_ERR", msg: "NE PAS FUMER SOUFFLET OUVERT SOUS PEINE D'EJECTION", style: "var(--neon-magenta)" }
         ];
 
-        function bootSystemPro() {
+        function bootQuantumHud() {
             document.getElementById('ios-lockout').style.display = 'none';
             if ('wakeLock' in navigator) navigator.wakeLock.request('screen').catch(()=>{});
 
-            startGpsCore();
-            startLoopConneries();
+            startTelemetryMapping();
+            startGlitchGenerator();
         }
 
-        function startGpsCore() {
+        function startTelemetryMapping() {
             if (navigator.geolocation) {
                 navigator.geolocation.watchPosition((pos) => {
                     let speedKMH = pos.coords.speed ? (pos.coords.speed * 3.6) : 0;
@@ -327,89 +272,67 @@
                     let rpm = Math.round(((speedMS * 60) / circ) * (setup.c / setup.p));
                     if (rpm < 0 || isNaN(rpm)) rpm = 0;
 
-                    // Update Chiffres
-                    document.getElementById('main-speed').innerText = Math.round(speedKMH);
-                    document.getElementById('main-rpm').innerText = rpm;
+                    // MAJ Écran Central
+                    document.getElementById('hud-speed').innerText = Math.round(speedKMH);
+                    document.getElementById('hud-rpm').innerText = rpm;
 
-                    // Update de l'aiguille circulaire pro (Dasharray total = 420 pour cet arc précis)
-                    let bar = document.getElementById('rpm-curve');
-                    let totalArc = 420; 
-                    let pct = Math.min(rpm / maxDisplayRpm, 1);
-                    bar.style.strokeDashoffset = totalArc - (pct * totalArc);
-
-                    // Couleur dynamique de la jauge pro
-                    if(pct > 0.85) bar.style.stroke = "var(--neon-red)";
-                    else if(pct > 0.65) bar.style.stroke = "var(--neon-yellow)";
-                    else bar.style.stroke = "var(--neon-blue)";
-
-                    // LOGIQUE DU TRAIN DE SHIFT-LIGHTS EFFECTIVES (10 LEDS)
-                    let leds = document.querySelectorAll('#lights-row .led');
-                    let totalLedsActive = Math.floor(pct * 10);
-                    leds.forEach((led, idx) => {
-                        if (idx < totalLedsActive) {
-                            led.classList.add('active');
-                        } else {
-                            led.classList.remove('active');
-                        }
-                    });
+                    // Aiguille Orbitale Épurée (Périmètre total du cercle r=135 => 2 * PI * 135 = 848)
+                    let needle = document.getElementById('orbit-needle');
+                    let circumference = 848;
+                    let pct = Math.min(rpm / maxRpmLimiter, 1);
+                    
+                    needle.style.strokeDashoffset = circumference - (pct * circumference);
 
                 }, () => {}, { enableHighAccuracy: true });
             }
         }
 
-        function startLoopConneries() {
-            // Déclencheur automatique de bêtises (Toutes les 24 secondes)
-            setInterval(() => { triggerPanneInterface(); }, 24000);
+        function startGlitchGenerator() {
+            // Déclencheur automatique de pannes spatiales (Toutes les 25 secondes)
+            setInterval(() => { triggerCyberAlerte(); }, 25000);
 
-            // Générateur d'ivresse aberrante technique
-            const diagnosticsAlcool = ["COMA ETHYLIQUE OBSERVE", "PERMIS PONEY CONFIRMÉ", "CONTRÔLE CRITIQUE REFUSÉ", "MALT 12 ANS IMMATRICULÉ"];
+            // Alcoomètre quantique intempestif
+            const insultesCyberAlcool = ["COMA ETHYLIQUE DETECTE", "PILOTE DE MOISSONNEUSE", "PERMIS PONEY ACTIVÉ", "PERTE TOTALE DE L'ESTIME DE SOI"];
             setInterval(() => {
-                let alcoolAbberant = (1.9 + Math.random() * 6.2).toFixed(2);
-                document.getElementById('val-alc').innerHTML = `${alcoolAbberant} <span style="font-size:1rem;">g/L</span>`;
-                document.getElementById('val-pilot-status').innerText = diagnosticsAlcool[Math.floor(Math.random() * diagnosticsAlcool.length)];
-                document.getElementById('val-pilot-status').style.color = "var(--neon-red)";
-            }, 6000);
+                let fauxTaux = (2.1 + Math.random() * 6.8).toFixed(2);
+                document.getElementById('hud-alc').innerHTML = `${fauxTaux} <span style="font-size:1rem;">g/L</span>`;
+                document.getElementById('hud-alc-msg').innerText = insultesCyberAlcool[Math.floor(Math.random() * insultesCyberAlcool.length)];
+            }, 5500);
 
-            // Premier déclenchement rapide
-            setTimeout(() => { triggerPanneInterface(); }, 4000);
+            // Premier pop-up rapide au décollage
+            setTimeout(() => { triggerCyberAlerte(); }, 3500);
         }
 
-        function triggerPanneInterface() {
-            let panne = listePannesPro[Math.floor(Math.random() * listePannesPro.length)];
+        function triggerCyberAlerte() {
+            let item = pannesCyber[Math.floor(Math.random() * pannesCyber.length)];
             
-            let banner = document.getElementById('banner-system');
-            let iconBox = document.getElementById('b-icon');
-            
-            iconBox.innerText = panne.icon;
-            document.getElementById('b-type').innerText = panne.type;
-            document.getElementById('b-text').innerText = panne.msg;
+            let popup = document.getElementById('cyber-alert');
+            document.getElementById('alt-icon').innerText = item.icon;
+            document.getElementById('alt-type').innerText = item.type;
+            document.getElementById('alt-text').innerText = item.msg;
 
-            // Appliquer la couleur de la panne directement sur la bordure et l'icône pour faire pro
-            banner.style.borderColor = panne.style;
-            
-            // Changements d'infos secondaires dans les grilles
-            if(panne.icon === "🚜") {
-                document.getElementById('val-gps').innerHTML = "<span style='color:var(--neon-yellow)'>OFF_ROAD_MUD</span>";
-                document.getElementById('val-map').innerHTML = "<span style='color:var(--neon-red)'>SLOW_MODE</span>";
+            popup.style.borderColor = item.style;
+            popup.style.boxShadow = `0 0 40px ${item.style}`;
+
+            // Modification de l'interface en arrière-plan pendant le hack
+            if (item.icon === "☄️") {
+                document.getElementById('sys-geo').innerHTML = "<span style='color:var(--neon-magenta);'>BAC_A_GRAVIER</span>";
+                document.getElementById('sys-map').innerHTML = "<span style='color:var(--neon-purple);'>EMERGENCY_STOP</span>";
             }
 
-            // Affichage de la grosse bannière
-            banner.classList.add('active');
+            // Descente du pop-up sur le flou
+            popup.classList.add('active');
 
-            if(bannerTimeout) clearTimeout(bannerTimeout);
-
-            // Fermeture automatique après 20 secondes
-            bannerTimeout = setTimeout(() => { closeBanner(); }, 20000);
+            if(activeTimer) clearTimeout(activeTimer);
+            activeTimer = setTimeout(() => { dismissCyberAlert(); }, 20000);
         }
 
-        function closeBanner() {
-            document.getElementById('banner-system').classList.remove('active');
+        function dismissCyberAlert() {
+            document.getElementById('cyber-alert').classList.remove('active');
             
-            // Reset des paramètres de bord
             setTimeout(() => {
-                document.getElementById('val-gps').innerHTML = "<span style='color:white'>TRACK_OK</span>";
-                document.getElementById('val-map').innerHTML = "<span style='color:var(--neon-green)'>RACE+</span>";
-                document.getElementById('val-pilot-status').style.color = "white";
+                document.getElementById('sys-geo').innerHTML = "<span style='color:#fff;'>STABLE_ORBIT</span>";
+                document.getElementById('sys-map').innerHTML = "<span style='color:var(--neon-green);'>HYPERDRIVE</span>";
             }, 600);
         }
     </script>
