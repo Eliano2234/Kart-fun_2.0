@@ -29,9 +29,7 @@
             position: relative;
         }
 
-        /* -------------------------------------------
-           FONDS DE NUAGES ET NÉBULEUSES FUTURISTES (ANIMÉS)
-        ------------------------------------------- */
+        /* FONDS DE NUAGES ET NÉBULEUSES FUTURISTES (ANIMÉS) */
         .space-bg {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             background: radial-gradient(circle at 30% 40%, #150030 0%, #020208 70%);
@@ -62,9 +60,7 @@
             border: none; border-radius: 30px; font-size: 1rem; cursor: pointer; text-transform: uppercase; letter-spacing: 2px; box-shadow: 0 0 20px rgba(157,0,255,0.5);
         }
 
-        /* -------------------------------------------
-           INTERFACE EN VERRE DÉPOLI (BLUR EFFECT)
-        ------------------------------------------- */
+        /* INTERFACE EN VERRE DÉPOLI (BLUR EFFECT) */
         .hologram-hud {
             position: relative; z-index: 10;
             width: 95vw; height: 90vh;
@@ -77,14 +73,27 @@
             border: 1px solid var(--glass-border);
             border-radius: 24px;
             box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-            backdrop-filter: blur(20px); /* L'effet de flou arrière-plan futuriste */
+            backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            padding: 20px;
+            padding: 22px;
             display: flex; flex-direction: column; justify-content: space-between;
             transition: all 0.5s ease;
         }
-        .panel-title { font-size: 0.7rem; font-weight: 900; color: var(--neon-cyan); letter-spacing: 2px; text-transform: uppercase; opacity: 0.8; }
+        .panel-title { font-size: 0.75rem; font-weight: 900; color: var(--neon-cyan); letter-spacing: 2px; text-transform: uppercase; opacity: 0.8; }
         .panel-data { font-size: 2.5rem; font-weight: 300; font-family: monospace; text-align: right; text-shadow: 0 0 10px rgba(255,255,255,0.3); }
+
+        /* MODIFICATEURS POUR LE BLOC DE DROITE (ALCOOL) */
+        .panel-data-alc { font-size: 3rem; font-weight: 400; } /* Légèrement plus gros */
+        .panel-data-cognitive { 
+            font-size: 1.55rem; /* Augmenté significativement */
+            font-weight: 700; 
+            font-family: sans-serif; 
+            text-align: right; 
+            line-height: 1.2;
+            margin-top: 15px;
+            letter-spacing: -0.5px;
+            text-shadow: 0 0 12px rgba(255, 0, 160, 0.4);
+        }
 
         /* CAPSULE CENTRALE COMPTEUR VITESSE */
         .core-capsule {
@@ -113,9 +122,7 @@
             filter: drop-shadow(0 0 8px var(--neon-cyan));
         }
 
-        /* -------------------------------------------
-           GROSSE ALERTE PIRATE / HOLOGRAPHIQUE
-        ------------------------------------------- */
+        /* GROSSE ALERTE PIRATE / HOLOGRAPHIQUE */
         .cyber-popup {
             position: fixed;
             top: -180px; /* Caché en haut */
@@ -127,16 +134,15 @@
             padding: 22px 30px;
             display: flex; align-items: center; gap: 30px;
             box-shadow: 0 0 40px rgba(255, 0, 160, 0.4);
-            backdrop-filter: blur(35px); /* Super flou derrière le message */
+            backdrop-filter: blur(35px);
             -webkit-backdrop-filter: blur(35px);
             transition: top 0.5s cubic-bezier(0.19, 1, 0.22, 1);
             z-index: 99999;
         }
-        .cyber-popup.active { top: 30px; } /* Descente */
+        .cyber-popup.active { top: 30px; }
 
-        /* Très gros logo du voyant fun */
         .cyber-giant-icon {
-            font-size: 4.5rem; /* Énorme comme demandé */
+            font-size: 4.5rem;
             filter: drop-shadow(0 0 15px var(--neon-magenta));
             animation: glitch-pulse 0.4s infinite alternate;
         }
@@ -158,7 +164,7 @@
 
     <div id="portrait-warning"><h3>🛸 RE-ALIGN INTERFACES TO HORIZONTAL</h3></div>
 
-    <!-- CITATION REQUISITION DE DEPART -->
+    <!-- CITATION DE DEPART -->
     <div id="ios-lockout">
         <div class="citation">"Le problème de notre drapeau, c'est que le blanc est au milieu."</div>
         <div class="auteur">L.F.illiol</div>
@@ -171,7 +177,7 @@
         <div class="cloud-2"></div>
     </div>
 
-    <!-- GROS MESSAGE ALERTE S'AFFICHANT SUR DU FLOU -->
+    <!-- LARGE BANNIÈRE FLUE -->
     <div class="cyber-popup" id="cyber-alert">
         <div class="cyber-giant-icon" id="alt-icon">⚙️</div>
         <div class="cyber-pop-body">
@@ -181,10 +187,10 @@
         <div class="cyber-close" onclick="dismissCyberAlert()">✕</div>
     </div>
 
-    <!-- HUD INTERACTIVE TRANSPARENTE FLUE -->
+    <!-- HUD INTERACTIVE TRANSPARENTE -->
     <div class="hologram-hud">
         
-        <!-- PANNEAU GAUCHE -->
+        <!-- PANNEAU GAUCHE : INFOS DE BORD -->
         <div class="glass-panel">
             <div>
                 <div class="panel-title">SYSTEM STATUS</div>
@@ -198,8 +204,6 @@
 
         <!-- GROS COMPTEUR CENTRAL CYBERNETIQUE -->
         <div class="glass-panel core-capsule">
-            
-            <!-- Cercle SVG Aiguille Orbitale -->
             <svg class="svg-orbit" viewBox="0 0 300 300">
                 <defs>
                     <linearGradient id="cyan-purple-grad" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -219,22 +223,21 @@
             <div class="cyber-rpm"><span id="hud-rpm">0</span> <span style="font-size: 0.7rem; color: rgba(255,255,255,0.4);">R/MIN</span></div>
         </div>
 
-        <!-- PANNEAU DROIT -->
+        <!-- PANNEAU DROIT : ALCOOL ET COGNITIVE LOG (AGRANDI) -->
         <div class="glass-panel">
             <div>
                 <div class="panel-title">BLOOD ETHANOL PROBE</div>
-                <div class="panel-data" id="hud-alc" style="color: var(--neon-cyan);">0.00 <span style="font-size: 1rem;">g/L</span></div>
+                <div class="panel-data panel-data-alc" id="hud-alc" style="color: var(--neon-cyan);">0.00 <span style="font-size: 1.1rem;">g/L</span></div>
             </div>
             <div>
                 <div class="panel-title">COGNITIVE LOG</div>
-                <div class="panel-data" id="hud-alc-msg" style="font-size: 1.1rem; color: var(--neon-magenta); margin-top: 10px;">ANALYSIS_CLEAR</div>
+                <div class="panel-data-cognitive" id="hud-alc-msg" style="color: var(--neon-magenta);">ANALYSIS_CLEAR</div>
             </div>
         </div>
 
     </div>
 
     <script>
-        // Extraction transparente des données de config kart
         let setup = {
             p: parseInt(localStorage.getItem('k_pignon')) || 11,
             c: parseInt(localStorage.getItem('k_couronne')) || 80,
@@ -244,7 +247,6 @@
         let activeTimer = null;
         const maxRpmLimiter = 14500;
 
-        // Base de pannes cyberpunk délirantes
         const pannesCyber = [
             { icon: "🛸", type: "CRITICAL_BIOLOGICAL_ERR", msg: "MAINTENANCE COURROIE D'ÉJACULATION STRATOSPHÉRIQUE", style: "var(--neon-magenta)" },
             { icon: "🧪", type: "CHEMICAL_REACTOR_WARN", msg: "CARBURANT ALTÉRÉ : 80% PASTIS INTERGALACTIQUE / 20% FRITURE", style: "var(--neon-cyan)" },
@@ -267,16 +269,13 @@
                     let speedKMH = pos.coords.speed ? (pos.coords.speed * 3.6) : 0;
                     let speedMS = pos.coords.speed || 0;
 
-                    // Calcul RPM
                     let circ = (setup.d / 100) * Math.PI;
                     let rpm = Math.round(((speedMS * 60) / circ) * (setup.c / setup.p));
                     if (rpm < 0 || isNaN(rpm)) rpm = 0;
 
-                    // MAJ Écran Central
                     document.getElementById('hud-speed').innerText = Math.round(speedKMH);
                     document.getElementById('hud-rpm').innerText = rpm;
 
-                    // Aiguille Orbitale Épurée (Périmètre total du cercle r=135 => 2 * PI * 135 = 848)
                     let needle = document.getElementById('orbit-needle');
                     let circumference = 848;
                     let pct = Math.min(rpm / maxRpmLimiter, 1);
@@ -288,18 +287,23 @@
         }
 
         function startGlitchGenerator() {
-            // Déclencheur automatique de pannes spatiales (Toutes les 25 secondes)
             setInterval(() => { triggerCyberAlerte(); }, 25000);
 
-            // Alcoomètre quantique intempestif
-            const insultesCyberAlcool = ["COMA ETHYLIQUE DETECTE", "PILOTE DE MOISSONNEUSE", "PERMIS PONEY ACTIVÉ", "PERTE TOTALE DE L'ESTIME DE SOI"];
+            // Liste de diagnostics d'ivresse cyberpunk (mis en majuscules pour s'accorder avec la grande taille)
+            const insultesCyberAlcool = [
+                "COMA ÉTHYLIQUE DÉTECTÉ", 
+                "CHAUFFEUR DE MOISSONNEUSE", 
+                "ÉLIGIBLE AU PERMIS PONEY", 
+                "PERTE TOTALE DE CONTRÔLE",
+                "MODE PUR MALT ACTIVÉ"
+            ];
+            
             setInterval(() => {
                 let fauxTaux = (2.1 + Math.random() * 6.8).toFixed(2);
-                document.getElementById('hud-alc').innerHTML = `${fauxTaux} <span style="font-size:1rem;">g/L</span>`;
+                document.getElementById('hud-alc').innerHTML = `${fauxTaux} <span style="font-size:1.1rem;">g/L</span>`;
                 document.getElementById('hud-alc-msg').innerText = insultesCyberAlcool[Math.floor(Math.random() * insultesCyberAlcool.length)];
             }, 5500);
 
-            // Premier pop-up rapide au décollage
             setTimeout(() => { triggerCyberAlerte(); }, 3500);
         }
 
@@ -314,13 +318,11 @@
             popup.style.borderColor = item.style;
             popup.style.boxShadow = `0 0 40px ${item.style}`;
 
-            // Modification de l'interface en arrière-plan pendant le hack
             if (item.icon === "☄️") {
                 document.getElementById('sys-geo').innerHTML = "<span style='color:var(--neon-magenta);'>BAC_A_GRAVIER</span>";
                 document.getElementById('sys-map').innerHTML = "<span style='color:var(--neon-purple);'>EMERGENCY_STOP</span>";
             }
 
-            // Descente du pop-up sur le flou
             popup.classList.add('active');
 
             if(activeTimer) clearTimeout(activeTimer);
